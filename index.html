@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ミニバス TO練習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--or:#f97316;--or2:#ea580c;--ink:#1e293b;--mut:#64748b;--bg:#fff7ed;--card:#fff;--line:#e2e8f0;--ok:#16a34a;--ng:#dc2626;--tri:#d97706;--blue:#2563eb;--q13:#dc2626;--q24:#1e3a8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"M PLUS Rounded 1c",system-ui,sans-serif}
+body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{font-family:inherit;cursor:pointer;border:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+#app{max-width:560px;margin:0 auto;min-height:100%}
+.wrap{padding:18px 16px 40px}
+h1{font-size:26px;margin:6px 0 2px;font-weight:800}
+h2{font-size:18px;margin:22px 0 10px}
+.lead{color:var(--mut);font-size:14px;margin:0 0 18px;line-height:1.6}
+.hero{background:linear-gradient(135deg,#f97316,#c2410c);color:#fff;border-radius:22px;padding:22px 20px;margin-bottom:18px;position:relative;overflow:hidden}
+.hero h1{color:#fff}.hero p{margin:6px 0 0;opacity:.92;font-size:14px;line-height:1.6}
+.hero .ballico{position:absolute;right:-18px;top:-18px;font-size:110px;opacity:.25}
+.menu{display:grid;gap:12px}
+.mcard{background:var(--card);border-radius:18px;padding:16px;display:flex;gap:14px;align-items:center;text-align:left;box-shadow:0 2px 0 #fed7aa;border:2px solid #fed7aa;width:100%;color:var(--ink)}
+.mcard .ic{font-size:32px;width:48px;text-align:center}
+.mcard b{font-size:17px;display:block}.mcard span{font-size:13px;color:var(--mut)}
+.mcard:active{transform:translateY(2px);box-shadow:none}
+.back{background:none;color:var(--or2);font-size:15px;font-weight:700;padding:6px 0}
+.opts{display:grid;gap:8px}
+.opts.g2{grid-template-columns:1fr 1fr}.opts.g3{grid-template-columns:1fr 1fr 1fr}
+.opt{background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px;text-align:left;color:var(--ink);font-size:14px}
+.opt b{display:block;font-size:15px}.opt small{color:var(--mut)}
+.opt.sel{border-color:var(--or);background:#fff1e6;box-shadow:0 0 0 2px #fdba74 inset}
+.opt .ic{font-size:22px}
+.tips{background:#fff;border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.7;border-left:5px solid var(--or)}
+.tips ul{margin:4px 0 0;padding-left:18px}
+.big{display:block;width:100%;background:var(--or);color:#fff;font-size:19px;font-weight:800;border-radius:16px;padding:16px;margin-top:20px;box-shadow:0 4px 0 #c2410c}
+.big:active{transform:translateY(3px);box-shadow:0 1px 0 #c2410c}
+.big.sec{background:#fff;color:var(--or2);box-shadow:0 4px 0 #fdba74;border:2px solid #fdba74}
+.row{display:flex;gap:8px;align-items:center}
+.toggle{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:14px;padding:12px 14px;margin-top:8px;font-size:14px}
+.sw{width:52px;height:30px;border-radius:30px;background:#cbd5e1;position:relative;transition:.2s}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--or)}.sw.on::after{left:25px}
+/* play */
+.play{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:560px;margin:0 auto;background:#111827}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;color:#fff;font-size:14px;font-weight:700}
+.topbar button{background:#374151;color:#fff;border-radius:10px;width:40px;height:34px;font-size:16px}
+.board{background:#000;color:#fff;margin:0 8px;border-radius:12px;padding:6px 8px;display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;border:2px solid #374151}
+.tm{text-align:center}
+.tm .nm{font-size:13px;font-weight:800}
+.tm .sc{font-family:Orbitron,monospace;font-size:30px;color:#facc15;line-height:1}
+.tm .mini{display:flex;justify-content:center;gap:6px;font-size:11px;margin-top:3px;align-items:center;color:#cbd5e1}
+.cyl{display:inline-flex;gap:2px}.cyl i{width:7px;height:10px;border-radius:2px;background:#374151;display:inline-block}.cyl i.on{background:#f8fafc}
+.red{width:12px;height:12px;border-radius:50%;background:#374151;display:inline-block}.red.on{background:#ef4444;box-shadow:0 0 6px #ef4444}
+.mid{text-align:center;min-width:120px}
+.gc{font-family:Orbitron,monospace;font-size:30px;color:#f87171;line-height:1}
+.gc.run{color:#4ade80}
+.qq{font-size:11px;color:#cbd5e1}
+.scl{font-family:Orbitron,monospace;font-size:22px;color:#fbbf24;line-height:1.1;min-height:26px}
+.scl.off{color:#374151}
+.arw{font-size:13px;color:#fb923c;letter-spacing:4px}
+.arw span{opacity:.18}.arw span.on{opacity:1}
+.mine{outline:2px dashed #fb923c;outline-offset:2px;border-radius:6px}
+.courtwrap{margin:6px 8px 0;position:relative}
+svg.court{width:100%;display:block;border-radius:10px;max-height:28vh}
+.pl{transition:transform .9s cubic-bezier(.4,.1,.3,1)}
+.ball{transition:transform .55s cubic-bezier(.4,.1,.3,1)}
+.cap{margin:6px 8px;background:#1f2937;color:#fff;border-radius:12px;padding:8px 12px;min-height:62px;position:relative}
+.capmain{font-size:17px;font-weight:800;line-height:1.35}
+.capsub{font-size:12px;color:#fdba74;margin-top:2px}
+.cap.flash{animation:fl .5s}
+@keyframes fl{0%{background:#fde047;color:#000}100%{background:#1f2937}}
+.toast{position:absolute;right:8px;top:-14px;padding:5px 10px;border-radius:999px;font-size:13px;font-weight:800;opacity:0;transition:opacity .2s;pointer-events:none;max-width:85%;color:#fff}
+.toast.show{opacity:1}
+.toast.o{background:var(--ok)}.toast.t{background:var(--tri)}.toast.x{background:var(--ng)}
+.panel{flex:1;background:#f8fafc;border-radius:18px 18px 0 0;padding:10px;overflow:auto;position:relative;min-height:0}
+.pbtn{border-radius:16px;font-weight:800;color:#fff;font-size:20px;padding:14px 6px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.pbtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.pbtn small{display:block;font-size:11px;font-weight:700;opacity:.9}
+.g{background:#16a34a}.r{background:#dc2626}.o{background:#f97316}.b{background:#2563eb}.k{background:#475569}.y{background:#ca8a04}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.huge{font-size:26px;padding:26px 6px}
+.lbl{font-size:12px;color:var(--mut);font-weight:700;margin:10px 2px 6px}
+.swbox{background:#fff;border-radius:14px;padding:10px;border:1px solid var(--line)}
+.swdisp{font-family:Orbitron,monospace;font-size:28px;text-align:center}
+.on-hand{outline:3px solid #f97316}
+/* scorer */
+.srow{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.srow button{font-size:12px;padding:9px 2px;border-radius:12px;color:#fff;font-weight:800;line-height:1.2}
+.tabs{display:flex;gap:6px;margin:8px 0}
+.tabs button{flex:1;padding:8px;border-radius:10px;background:#e2e8f0;font-weight:800;font-size:13px;color:var(--ink)}
+.tabs button.on{background:var(--ink);color:#fff}
+.rs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border:2px solid #0f172a;background:#fff;max-width:300px;margin:0 auto}
+.rs .h{background:#e2e8f0;text-align:center;font-weight:800;font-size:13px;padding:3px;border:1px solid #94a3b8}
+.rs .c{height:30px;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:14px;position:relative;font-weight:700}
+.rs .tot{color:#94a3b8;background:#fafafa}
+.rs .tot.B{background:#eef2f7}
+.rs .tot.hit{color:#0f172a}
+.rs .tot .sl{position:absolute;inset:0;background:linear-gradient(to top right,transparent calc(50% - 1.5px),var(--qc) calc(50% - 1.5px),var(--qc) calc(50% + 1.5px),transparent calc(50% + 1.5px))}
+.rs .tot .dot{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--qc)}
+.rs .num{color:var(--qc)}
+.rs .num.cir span{border:2px solid var(--qc);border-radius:50%;padding:0 4px}
+.rs .qend{border-bottom:3px solid #0f172a!important}
+.rs .tot.circ::before{content:"";position:absolute;inset:2px;border:2px solid #0f172a;border-radius:50%}
+.rs .tot.pre{opacity:.55}
+.ft{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+.ft td,.ft th{border:1px solid #cbd5e1;text-align:center;height:30px;padding:0}
+.ft th{background:#e2e8f0;font-size:12px}
+.ft td.no{font-weight:800;width:40px}
+.ft td.fb{width:16%;font-weight:800}
+.ft tr.tap td.no{background:#fff7ed}
+.ft td.fb sub{font-size:9px}
+.ft td.out{background:#fee2e2}
+.boxes{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px}
+.boxes button{width:36px;height:34px;border-radius:8px;background:#fff;border:2px solid #94a3b8;font-weight:800;font-size:14px;color:var(--ink);position:relative}
+.boxes button.m{color:#94a3b8}
+.boxes button.m::after{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent calc(50% - 1.5px),var(--qc,#0f172a) calc(50% - 1.5px),var(--qc,#0f172a) calc(50% + 1.5px),transparent calc(50% + 1.5px))}
+.boxes button.x::after{content:"×";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--qc,#0f172a)}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;background:#fff;border-radius:20px 20px 0 0;box-shadow:0 -6px 30px rgba(0,0,0,.35);padding:14px 14px calc(14px + env(safe-area-inset-bottom));z-index:50}
+.sheet h3{margin:0 0 8px;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{min-width:48px;padding:10px 12px;border-radius:12px;background:#f1f5f9;font-weight:800;font-size:16px;color:var(--ink);border:2px solid transparent}
+.chips button.sel{border-color:var(--or);background:#fff1e6}
+.callbox{background:#fff7ed;border:2px solid #fb923c;border-radius:14px;padding:10px;margin-bottom:8px}
+.callbox .chips button{background:#fff;font-size:18px}
+.pad{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pad button{padding:12px 0;border-radius:12px;font-weight:800;font-size:18px;background:#fff;border:2px solid #cbd5e1;color:var(--ink)}
+.tbl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tcard{background:#fff;border-radius:14px;padding:10px;border:1px solid var(--line);text-align:center}
+.tcard .n{font-family:Orbitron,monospace;font-size:30px}
+.tcard .row{justify-content:center}
+.tcard .row button{width:46px;height:40px;border-radius:12px;font-size:20px;font-weight:800;background:#e2e8f0;color:var(--ink)}
+.redbtn{margin-top:8px;width:100%;padding:9px;border-radius:12px;font-weight:800;background:#fee2e2;color:#991b1b}
+.redbtn.on{background:#ef4444;color:#fff}
+/* result & drill */
+.score{font-family:Orbitron,monospace;font-size:54px;font-weight:800;color:var(--or2);text-align:center}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stats div{background:#fff;border-radius:14px;padding:10px;font-size:12px;color:var(--mut)}
+.stats b{display:block;font-size:22px;color:var(--ink)}
+.log{display:grid;gap:8px;margin-top:10px}
+.li{background:#fff;border-radius:14px;padding:10px 12px;font-size:13px;line-height:1.6;border-left:6px solid var(--ng)}
+.li.t{border-left-color:var(--tri)}.li.o{border-left-color:var(--ok)}
+.li .c{color:var(--mut);font-size:12px}
+.qcard{background:#fff;border-radius:18px;padding:16px;margin-top:8px}
+.qcard .qt{font-size:17px;font-weight:800;line-height:1.5}
+.qcard .cat{font-size:12px;color:var(--or2);font-weight:800}
+.ans{display:grid;gap:8px;margin-top:12px}
+.ans button{text-align:left;background:#f8fafc;border:2px solid var(--line);border-radius:14px;padding:12px;font-size:15px;color:var(--ink)}
+.ans button.right{border-color:var(--ok);background:#dcfce7}
+.ans button.wrong{border-color:var(--ng);background:#fee2e2}
+.expl{margin-top:12px;background:#fff7ed;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.7}
+.prog{height:8px;background:#fed7aa;border-radius:8px;overflow:hidden;margin-top:6px}.prog i{display:block;height:100%;background:var(--or)}
+.rule{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px}
+.rule h3{margin:0 0 6px;font-size:16px}
+.rule ul{margin:0;padding-left:18px;font-size:14px;line-height:1.75}
+.rule table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.rule td,.rule th{border:1px solid var(--line);padding:5px;text-align:left;vertical-align:top}
+.rule th{background:#fff7ed}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px}
+.modal .box{background:#fff;border-radius:20px;padding:20px;max-width:380px;width:100%;text-align:center}
+.modal .box h3{margin:0 0 6px}
+.modal .box p{font-size:14px;color:var(--mut);line-height:1.6}
+.play{position:relative}
+.lcard{position:absolute;left:8px;right:8px;top:46px;z-index:40;background:#fff;border-radius:18px;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.5);border-top:8px solid var(--ok);max-height:62%;overflow:auto;animation:pop .2s}
+.lcard.ng{border-top-color:var(--ng)}
+.lcard .lt{font-size:19px;font-weight:800;margin-bottom:6px}
+.lcard.ok .lt{color:var(--ok)}.lcard.ng .lt{color:var(--ng)}
+.lcard .lb{font-size:15px;line-height:1.7}
+.lcard .lb .c{font-size:12px;color:var(--mut)}
+.lcard .lhint{margin-top:8px;font-size:13px;color:var(--or2);font-weight:700}
+.lcard .lbtns{display:grid;grid-auto-flow:column;gap:8px;margin-top:12px}
+.lcard .lbtns .pbtn{font-size:16px;padding:12px 6px}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
+.prompt{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff7ed;border:2px solid #fb923c;border-radius:14px;padding:8px 10px;margin-bottom:10px;font-size:14px;animation:pop .2s}
+.prompt small{color:var(--mut)}
+.prompt .row button{white-space:nowrap;background:#fff;border:2px solid #cbd5e1;border-radius:12px;padding:6px 10px;font-weight:800;font-size:12px;color:var(--ink);line-height:1.3}
+.prompt .row .hb{background:#fef9c3;border-color:#facc15}
+.hint{outline:4px solid #facc15!important;outline-offset:2px;animation:hp 1s infinite;position:relative;z-index:2}
+@keyframes hp{50%{outline-color:#f97316;transform:scale(1.04)}}
+tr.hint td{background:#fef9c3!important}
+.count{font-family:Orbitron,monospace;font-size:64px;color:#fff;text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+/* ============ 基本データ ============ */
+const TN={A:'白',B:'青'};
+const NUMS=[4,5,6,7,8,9,10,11,12,13,14,15];
+const ROLES={
+ timer:{name:'タイマー',icon:'⏱️',desc:'ゲームクロックのスタート／ストップ、タイムアウトの計測',tips:['ジャンプボールはタップした瞬間にスタート','スローインはコート内の選手に触れたらスタート','笛が鳴ったらすぐストップ','U12はシュートが入ってもゲームクロックは止めない','タイムアウトを求めたチームの相手がシュートを決めたらストップ','最後のフリースローの前に手を上げて準備','タイムアウトは合図から計測し、35秒と45秒でブザー']},
+ shot:{name:'ショットクロック',icon:'⏲️',desc:'24秒・14秒・リセット・表示を消す',tips:['コントロールしたらスタート（ふれただけではダメ）','リングに当たった瞬間・入った瞬間に「消す」','ディフェンスがリバウンド→24秒、オフェンスがリバウンド→14秒','パスカットしただけでは何もしない','笛が鳴ったら必ず一度ストップ→シグナルを見て継続かリセットか','フリースローのときは表示を消す','新しく計るとき、残り時間がそれより少なければ表示を消す']},
+ scorer:{name:'スコアラー',icon:'📝',desc:'スコアシート記入・タイムアウトの合図・矢じるし',tips:['2点＝数字に斜線＋番号、1点（FT）＝●、3点＝番号を○','ファウル：P＝スローイン、P\'＝フリースロー（右下にQ数）','チームファウルは数字に斜線、タイムアウトはQの枠に×','タイムアウトの合図は「笛のあと」「相手の得点のあと」「最後のFT成功のあと」','ファウルのときは審判の報告が終わってから','ジャンプボール後は、コントロールしなかったチームの攻める方向へ矢じるし','ヘルドボールで矢じるしに手をそえ、スローインが触れたら反転']},
+ asst:{name:'アシスタントスコアラー',icon:'🔢',desc:'得点コール・ファウル数の表示・円筒と赤い標識',tips:['得点が入ったら「A（白）対 B（青）」の順にコール','ファウルの報告のあと、チームファウル→個人ファウルの順に示す','円筒（チームファウル数）はボールがライブになったら（ボールが渡されたら）のせる','4個目のチームファウルのあと、ボールが渡されたら赤い標識','声を出したり立ち上がったりしない']}
+};
+const SCENES={q1:{name:'第1Q 開始',desc:'ジャンプボールから試合スタート'},q2:{name:'第2Q 開始',desc:'矢じるし（アロー）のスローインから'},q4:{name:'第4Q 残り1分20秒',desc:'接戦の終盤〜試合終了のブザーまで'}};
+const MODES={learn:{name:'📖 学習モード',desc:'操作する場面で止まる。まちがえたら正解とヒントが出る'},practice:{name:'🏃 練習モード',desc:'試合は流れる。ミスしたらその場で止まって解説'},real:{name:'🏆 本番モード',desc:'止まらない。終わってからまとめて確認'}};
+const SPEEDS={slow:{name:'ゆっくり',desc:'はじめての人に',gapMul:1.8,win:2800,slow:1500,task:20000},normal:{name:'ふつう',desc:'少し慣れてきたら',gapMul:1,win:1600,slow:950,task:11000},real:{name:'本番',desc:'実際の試合のテンポ',gapMul:.8,win:1200,slow:700,task:8000}};
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const oth=t=>t==='A'?'B':'A';
+const clone=o=>JSON.parse(JSON.stringify(o));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function fmtClock(s){s=Math.max(0,s);if(s>=60){const t=Math.ceil(s-1e-6);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0');}return s.toFixed(1);}
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* ============ 音 ============ */
+let AC=null,soundOn=store.get('to-sound',true);
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(AC&&AC.state==='suspended')AC.resume().catch(()=>{});return AC;}
+function tone(f,dur,type,vol,t0){const a=ac();if(!a||!soundOn)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+(t0||0);o.type=type||'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.2,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g).connect(a.destination);o.start(t);o.stop(t+dur+.05);}
+function noise(dur,freq,vol){const a=ac();if(!a||!soundOn)return;const b=a.createBuffer(1,Math.floor(a.sampleRate*dur),a.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);const s=a.createBufferSource();s.buffer=b;const f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=freq;const g=a.createGain();g.gain.value=vol;s.connect(f).connect(g).connect(a.destination);s.start();}
+function whistle(){const a=ac();if(!a||!soundOn)return;const t=a.currentTime,o=a.createOscillator(),g=a.createGain(),l=a.createOscillator(),lg=a.createGain();o.frequency.value=2900;l.frequency.value=36;lg.gain.value=200;l.connect(lg).connect(o.frequency);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.02);g.gain.setValueAtTime(.16,t+.42);g.gain.linearRampToValueAtTime(0,t+.48);o.connect(g).connect(a.destination);o.start(t);l.start(t);o.stop(t+.5);l.stop(t+.5);}
+function buzzer(d){d=d||.75;tone(180,d,'sawtooth',.14);tone(183,d,'square',.05);}
+function swish(){noise(.3,2600,.25);}
+function rimS(){tone(520,.4,'triangle',.2);tone(1310,.3,'sine',.08);tone(2150,.18,'sine',.05);}
+function blip(ok){ok?tone(988,.1,'sine',.08):tone(200,.18,'square',.05);}
+
+/* ============ 状態の操作（正解・ユーザー共通） ============ */
+function applyOps(s,ops){
+ if(!ops)return;
+ if(ops.gc==='start'){s.gcRun=true;s.hand=false;}
+ if(ops.gc==='stop')s.gcRun=false;
+ (ops.sc||[]).forEach(o=>{const c=s.sc;
+  if(o==='stop')c.run=false;
+  else if(o==='start'){c.run=true;c.hidden=false;}
+  else if(o==='hide'){c.val=24;c.run=false;c.hidden=true;}
+  else if(o==='go24'){c.val=24;c.run=true;c.hidden=false;}
+  else if(o==='go14'){c.val=14;c.run=true;c.hidden=false;}
+ });
+ if(ops.arrow!==undefined)s.arrow=ops.arrow;
+ if(ops.table)s.table=clone(ops.table);
+ if(ops.hand)s.hand=true;
+ if(ops.clock0){s.clock=0;s.gcRun=false;}
+}
+
+/* ============ シナリオ生成 ============ */
+function gen(cfg){
+ const sp=SPEEDS[cfg.speed];
+ const S={q:1,clock:360,gcRun:false,sc:{val:24,run:false,hidden:false},score:{A:0,B:0},tf:{A:0,B:0},pf:{A:{},B:{}},arrow:null,arrowTeam:null,att:{A:'R',B:'L'},poss:'A',toReq:null,toUsed:{A:false,B:false},table:{A:{n:0,red:false},B:{n:0,red:false}},hand:false,court:{A:[4,5,6,7,8],B:[4,5,6,7,8]},ended:false,trap:null};
+ const pre={rs:{A:{},B:{}},pf:{A:{},B:{}},tfm:{1:{A:0,B:0},2:{A:0,B:0},3:{A:0,B:0},4:{A:0,B:0}},tom:{A:[],B:[]},qends:[]};
+ function prefill(T,target,qs){let tot=0;const ends={};while(tot<target){const pts=(target-tot>=2&&Math.random()<.8)?2:1;tot+=pts;const q=qs[Math.min(qs.length-1,Math.floor(tot/target*qs.length*0.999))];pre.rs[T][tot]={mark:pts===2?'2':'1',num:rnd([4,5,6,7,8,9,10]),q,pre:true};ends[q]=tot;}return ends;}
+ if(cfg.scene==='q2'){
+  S.q=2;S.score={A:12,B:10};S.arrowTeam='A';S.arrow=S.att.A;
+  prefill('A',12,[1]);prefill('B',10,[1]);pre.qends.push({A:12,B:10});
+  pre.pf.A[5]=[{t:'P',q:1}];pre.pf.B[6]=[{t:'P',q:1}];pre.pf.B[8]=[{t:"P'",q:1}];pre.tfm[1]={A:1,B:2};pre.tom.A=[1];
+ }
+ if(cfg.scene==='q4'){
+  S.q=4;S.clock=80;S.att={A:'L',B:'R'};S.score={A:24,B:22};S.tf={A:3,B:4};S.table={A:{n:3,red:false},B:{n:4,red:true}};S.arrowTeam='A';S.arrow=S.att.A;S.poss='B';S.pf.A[7]=4;S.court.A=[4,5,6,7,8];
+  const ea=prefill('A',24,[1,2,3,4]),eb=prefill('B',22,[1,2,3,4]);
+  pre.qends.push({A:ea[1]||0,B:eb[1]||0},{A:ea[2]||0,B:eb[2]||0},{A:ea[3]||0,B:eb[3]||0});
+  pre.pf.A[7]=[{t:'P',q:1},{t:'P',q:2},{t:"P'",q:3},{t:'P',q:4}];pre.pf.A[5]=[{t:'P',q:2},{t:'P',q:4}];pre.pf.A[8]=[{t:'P',q:4}];
+  pre.pf.B[4]=[{t:'P',q:1},{t:'P',q:4}];pre.pf.B[6]=[{t:'P',q:3},{t:"P'",q:4}];pre.pf.B[9]=[{t:'P',q:4},{t:'P',q:4}];
+  pre.tfm={1:{A:1,B:1},2:{A:2,B:0},3:{A:1,B:1},4:{A:3,B:4}};pre.tom={A:[2,3],B:[1,3]};
+ }
+ const init=clone(S);
+ const steps=[];let T=0;
+ const pick=t=>rnd(S.court[t]);
+ function tick(sec){if(S.gcRun)S.clock=Math.max(0,S.clock-sec);if(S.sc.run)S.sc.val=Math.max(0,S.sc.val-sec);}
+ function snap(st){st.disp={score:{...S.score},tf:{...S.tf},q:S.q};}
+ function push(st){
+  if(S.ended)return st;
+  const gap=st.fixedGap!=null?st.fixedGap:Math.round((st.gap||2400)*sp.gapMul);
+  if(cfg.scene==='q4'&&S.gcRun&&S.clock-gap/1000<=0.25){
+   const g2=Math.max(300,Math.round(S.clock*1000));tick(g2/1000);T+=g2;S.ended=true;
+   const end={t:T,cap:'ブザー！ 試合終了（ゲームクロック 0:00）',sub:'おつかれさま！最後の記録まで落ちついて',sfx:'buzzer',end:true,ball:st.ball,poss:st.poss,
+    ops:{clock0:true,sc:['hide']},chk:{shot:'各Qの終わりはショットクロックの表示を消す（マニュアル）'},
+    tasks:[{role:'scorer',type:'qend',expl:'Qの終わり：最後の得点を○で囲み、両チームの点数の下に太い横線を引く（p.10）'}]};
+   applyOps(S,end.ops);snap(end);steps.push(end);return st;
+  }
+  tick(gap/1000);T+=gap;st.t=T;
+  if(st.ops&&st.ops.sc){let hid=false;st.ops.sc=st.ops.sc.map(o=>{if(o==='new24'||o==='new14'){const v=o==='new24'?24:14;if(S.clock<v){hid=true;return 'hide';}return o==='new24'?'go24':'go14';}return o;});
+   if(hid)st.chk=Object.assign({},st.chk,{shot:`ゲームの残り時間（${fmtClock(S.clock)}）がショットクロックより少ないので、表示を消したままにする（p.48）`});}
+  applyOps(S,st.ops);
+  if(st.poss)S.poss=st.poss;
+  snap(st);steps.push(st);return st;
+ }
+ const W=t=>TN[t];
+ const WH={timer:'審判が笛を鳴らしたらすぐにストップ（p.28）',shot:'笛が鳴ったら必ず一度ストップし、審判のシグナルを見てから継続かリセットか決める（マニュアル）'};
+ function tableUpd(){const nt=clone(S.table),msgs=[];['A','B'].forEach(t=>{const n=Math.min(S.tf[t],4),red=S.tf[t]>=4;if(nt[t].n!==n){nt[t].n=n;msgs.push(`${W(t)}の円筒を${n}にする`);}if(nt[t].red!==red){nt[t].red=red;if(red)msgs.push(`${W(t)}は4個目のチームファウルのあとなので赤い標識を出す`);}});return{nt,msg:msgs.length?'ボールがライブになった（ボールが渡された）ので、'+msgs.join('・')+'（p.49-51・マニュアル）':null};}
+ function trapCheck(ball){if(S.trap&&!S.toReq&&!S.ended&&!S.toUsed[S.trap]){const R=S.trap;S.trap=null;push({gap:900,cap:`${W(R)}のコーチがタイムアウトを請求！`,sub:'（ボールが渡された直後）',ball,buzz:'ng',buzzExpl:'スローイン／フリースローのボールが渡されたあとの請求なので、まだ知らせない（p.17-18）'});S.toReq=R;}}
+ function giveBall(cap,ball,ex){ex=ex||{};const{nt,msg}=tableUpd();const st=Object.assign({gap:2300,cap,ball,poss:ball.team},ex);st.ops=Object.assign({},ex.ops||{},{table:nt});st.chk=Object.assign({},ex.chk||{});if(msg)st.chk.asst=msg;st.ballLive=true;push(st);trapCheck(ball);return st;}
+ function touch(Y,sc,gcStart,chk,ex){ex=ex||{};const st=Object.assign({gap:2300,cap:'スローインのボールがコート内の選手に触れた！',ball:{k:'wing',team:Y},poss:Y},ex);st.ops=Object.assign({sc},ex.ops||{});st.chk=Object.assign({},chk||{});if(gcStart){st.ops.gc='start';if(!st.chk.timer)st.chk.timer='スローインのボールがコート内の選手に触れたらスタート（p.26）';}else if(!st.chk.timer&&S.gcRun){st.chk.timer='ゲームクロックは動いたまま（何もしない）';}push(st);}
+ function toSeq(R){
+  S.toReq=null;S.toUsed[R]=true;
+  const t1={role:'scorer',type:'tom',team:R,q:S.q,expl:`${W(R)}のタイムアウト欄「第${S.q}Q」に×を記入（p.8）`};
+  if(cfg.role==='timer'){
+   push({gap:2600,cap:`審判がタイムアウトの合図（${W(R)}）`,sub:'⏱ ストップウォッチで計って、35秒と45秒でブザー！',whistle:true,toSignal:true,toTeam:R,tasks:[t1]});
+   push({fixedGap:48000,cap:'タイムアウト終了。選手がコートにもどる'});
+  }else{
+   push({gap:2600,cap:`審判がタイムアウトの合図（${W(R)}）`,sub:'（タイムアウト中は早送りします）',whistle:true,toSignal:true,toTeam:R,tasks:[t1]});
+   push({gap:3600,cap:'35秒のブザー（あと10秒）',sub:'タイムアウト中…',sfx:'buzzer'});
+   push({gap:2600,cap:'45秒のブザー。タイムアウト終了',sfx:'buzzer'});
+  }
+ }
+ function shotAttempt(X,n){push({gap:3200,cap:`${W(X)} ${n}番がシュート…`,ball:{k:'shoot',team:X},poss:X});}
+ function bMade(X,pts){
+  const Y=oth(X),n=pick(X);shotAttempt(X,n);
+  S.score[X]+=pts;const total=S.score[X];
+  const req=S.toReq,ok=req===Y,ng=req===X;
+  const st={gap:1300,cap:`入った！ ${W(X)} ${n}番 ${pts}点`,sfx:'swish',ball:{k:'rim',team:X},poss:X,ops:{sc:['hide']},
+   chk:{shot:'ボールがバスケットに入ったら、24秒にリセットして表示を消す（p.38・46）'},
+   tasks:[{role:'scorer',type:'rs',team:X,total,num:n,mark:pts===3?'3':'2',expl:`ランニングスコア${W(X)}側の「${total}」に斜線、横に「${n}」${pts===3?'（3点は番号を○で囲む）':''}（p.9）`},
+          {role:'asst',type:'call',a:S.score.A,b:S.score.B,expl:`「${S.score.A}対${S.score.B}」とA（白）→B（青）の順にコール（マニュアル）`}]};
+  if(ok){st.ops.gc='stop';st.chk.timer=`タイムアウトを求めている${W(Y)}の相手（${W(X)}）がシュートを決めたので、ゲームクロックを止める（p.29）`;st.buzz='ok';st.buzzExpl=`相手チームのシュートが入った→得点された${W(Y)}のタイムアウトを知らせてOK（p.16）`;}
+  else{st.chk.timer='U12では、シュートが入ってもゲームクロックは止めない（マニュアル付録）';if(ng){st.buzz='ng';st.buzzExpl=`タイムアウトを求めた${W(X)}が得点したので、まだ知らせない（得点された側のタイムアウトだけOK）（p.16）`;}}
+  push(st);
+  if(ok)toSeq(Y);
+  giveBall(`${W(Y)}がエンドラインからスローイン（ボールを持った）`,{k:'endIn',team:Y});
+  touch(Y,['new24'],ok,{shot:'スローインのボールがコート内の選手に触れたら24秒スタート（p.35）'});
+ }
+ function rimStep(X){push({gap:1300,cap:'リングに当たった！',sfx:'rim',ball:{k:'rim',team:X},poss:X,ops:{sc:['hide']},chk:{shot:'シュートがリングに当たった瞬間にリセットして表示を消す（p.36・38）'}});}
+ function bMissDef(X){const Y=oth(X),n=pick(X);shotAttempt(X,n);rimStep(X);
+  if(Math.random()<.5)push({gap:1200,cap:'リバウンド争い…ボールがはじかれた（まだだれもコントロールしていない）',ball:{k:'rim',team:X},poss:X,chk:{shot:'ふれただけではまだスタートしない。コントロールしてから（p.37）'}});
+  push({gap:1500,cap:`${W(Y)}がリバウンドをとった（コントロール）`,ball:{k:'top',team:Y},poss:Y,ops:{sc:['new24']},chk:{shot:'ディフェンス側がコントロールしたら24秒からスタート（p.36）'}});}
+ function bMissOff(X){const n=pick(X);shotAttempt(X,n);rimStep(X);
+  push({gap:1500,cap:`${W(X)}がオフェンスリバウンド！（コントロール）`,ball:{k:'shoot',team:X},poss:X,ops:{sc:['new14']},chk:{shot:'リングに当たったあと、オフェンス側がコントロール→14秒にリセットしてスタート（p.42）'}});}
+ function bSteal(X){const Y=oth(X),m=pick(Y);push({gap:3400,cap:`${W(Y)} ${m}番がパスカット！ そのままドリブル（コントロール）`,ball:{k:'wing',team:Y},poss:Y,ops:{sc:['new24']},chk:{shot:'相手チームがボールをコントロールしたので24秒にリセット（p.39）'}});}
+ function bTip(X){const Y=oth(X);push({gap:3000,cap:`${W(Y)}の選手がパスに手を出してはじいた！`,sub:'（まだコントロールはしていない）',ball:{k:'wing',team:X},poss:X,chk:{shot:'パスやドリブルをカットしただけでは、ストップもリセットもしない（p.39）'}});
+  push({gap:1800,cap:`${W(X)}がボールをひろい直した`,ball:{k:'top',team:X},poss:X,chk:{shot:'同じチームがコントロールし続けているので、そのまま（p.39）'}});}
+ function bOutDef(X){const Y=oth(X);const req=S.toReq;
+  push({gap:3200,cap:`ピッ！ ${W(Y)}がボールをコートの外に出した（${W(X)}ボール）`,whistle:true,ball:{k:'sideIn',team:X},poss:X,ops:{gc:'stop',sc:['stop']},chk:{...WH},buzz:req?'ok':null,buzzExpl:'審判が笛を鳴らしたとき（ファウル以外）は知らせてOK（p.16）'});
+  if(req)toSeq(req);
+  giveBall(`審判が${W(X)}のスローインする選手にボールを渡した`,{k:'sideIn',team:X});
+  touch(X,['start'],true,{shot:'それまでコントロールしていたチームのスローインなので、リセットせず続きから（p.44）'});}
+ function bTravel(X){const Y=oth(X),n=pick(X);const req=S.toReq;
+  push({gap:3200,cap:`ピッ！ ${W(X)} ${n}番のトラベリング（${W(Y)}ボール）`,whistle:true,ball:{k:'top',team:X},poss:X,ops:{gc:'stop',sc:['stop']},flexSc:true,chk:{...WH},buzz:req?'ok':null,buzzExpl:'審判が笛を鳴らしたとき（ファウル以外）は知らせてOK（p.16）'});
+  if(req)toSeq(req);
+  giveBall(`審判が${W(Y)}のスローインする選手にボールを渡した`,{k:'sideIn',team:Y});
+  touch(Y,['new24'],true,{shot:'相手チームのボールになったので24秒にリセットしてスタート（p.46）'});}
+ function bFoul(X,shooting,forced){
+  const Y=oth(X),m=forced?forced:pick(Y),n=pick(X);const req=S.toReq;
+  push({gap:3200,cap:shooting?`${W(X)} ${n}番がシュート… ピッ！ ファウル！`:'ピッ！ ファウル！',whistle:true,ball:{k:'shoot',team:X},poss:X,ops:{gc:'stop',sc:['stop']},flexSc:true,chk:{...WH},buzz:req?'ng':null,buzzExpl:'ファウルのときは、審判がTOにファウルの内容を報告し終わるまで待つ（p.16）'});
+  S.tf[Y]++;S.pf[Y][m]=(S.pf[Y][m]||0)+1;const pc=S.pf[Y][m],tc=S.tf[Y];
+  const pen=!shooting&&tc>=5,ft=shooting||pen,type=ft?"P'":'P';
+  const tasks=[{role:'scorer',type:'foul',team:Y,num:m,ftype:type,expl:`${W(Y)} ${m}番のファウル欄に「${type}${S.q}」（${ft?'フリースローあり→P\'':'スローイン→P'}、右下はQ数）（p.5）`}];
+  if(tc<=4)tasks.push({role:'scorer',type:'tfm',team:Y,count:tc,expl:`${W(Y)}のチームファウル（第${S.q}Q）の「${tc}」に斜線（p.8）`});
+  if(pc===5)tasks.push({role:'scorer',type:'five',team:Y,num:m,expl:`${W(Y)} ${m}番は5回目のファウル→審判に「${W(Y)}${m}番、ファイブファウルです！」と知らせる（p.21）`});
+  tasks.push({role:'asst',type:'fshow',team:Y,tc:Math.min(tc,5),pc,expl:`チームファウル「${Math.min(tc,5)}」→個人ファウル「${pc}」の順に示す（マニュアル）`});
+  let what=shooting?'シュート中のファウル（フリースロー2本）':pen?'パーソナルファウル（チームファウル5個目以上→フリースロー2本）':'パーソナルファウル（スローイン）';
+  push({gap:2700,cap:`審判がTOに報告：${W(Y)} ${m}番、${what}`,sub:pc===5?`（${W(Y)}${m}番は5回目のファウル）`:'',ball:{k:'shoot',team:X},poss:X,foulReport:true,tasks,buzz:req?'ok':null,buzzExpl:'ファウルの報告が終わったので、タイムアウトを知らせてOK（p.16）'});
+  if(pc===5){S.court[Y]=S.court[Y].filter(v=>v!==m);S.court[Y].push(NUMS.find(v=>!S.court[Y].includes(v)&&v!==m));}
+  if(req)toSeq(req);
+  if(ft)ftSeq(X,n);
+  else{giveBall(`審判が${W(X)}のスローインする選手にボールを渡した`,{k:'sideIn',team:X});
+   touch(X,['new24'],true,{shot:'相手チームのファウルのあとのスローインは24秒にリセット（U12：マニュアル付録）'});}
+ }
+ function ftSeq(X,n){
+  const Y=oth(X);
+  giveBall(`1本目：審判がシューター（${W(X)} ${n}番）にボールを渡した`,{k:'ft',team:X},{ops:{sc:['hide']},chk:{shot:'フリースローのときはショットクロックの表示を消す（p.46）',timer:'フリースローの間はゲームクロックは止めたまま'}});
+  const m1=Math.random()<.6;
+  const s1={gap:2700,cap:'1本目… '+(m1?'入った！':'外れた'),sfx:m1?'swish':'rim',ball:{k:'rim',team:X},poss:X,tasks:[]};
+  if(m1){S.score[X]+=1;s1.tasks.push({role:'scorer',type:'rs',team:X,total:S.score[X],num:n,mark:'1',expl:`フリースロー成功→${W(X)}側の「${S.score[X]}」に●、横に「${n}」（p.9）`},{role:'asst',type:'call',a:S.score.A,b:S.score.B,expl:`「${S.score.A}対${S.score.B}」とコール`});}
+  if(S.toReq){s1.buzz='ng';s1.buzzExpl='1本目のあとは知らせない（最後のフリースローが成功したときだけOK）（p.16）';}
+  push(s1);
+  push({gap:2300,cap:'2本目（最後）：審判がシューターにボールを渡した',ball:{k:'ft',team:X},poss:X,ops:{hand:true},chk:{timer:'2本のフリースローの最後の1本の前に、手を上げて準備（マニュアル）',hand:true}});
+  trapCheck({k:'ft',team:X});
+  const m2=Math.random()<.5;
+  if(m2){S.score[X]+=1;const req=S.toReq;
+   push({gap:2700,cap:'2本目… 入った！',sfx:'swish',ball:{k:'rim',team:X},poss:X,tasks:[{role:'scorer',type:'rs',team:X,total:S.score[X],num:n,mark:'1',expl:`フリースロー成功→${W(X)}側の「${S.score[X]}」に●、横に「${n}」（p.9）`},{role:'asst',type:'call',a:S.score.A,b:S.score.B,expl:`「${S.score.A}対${S.score.B}」とコール`}],buzz:req?'ok':null,buzzExpl:'最後のフリースローが成功したときは、どちらのチームのタイムアウトでも知らせてOK（p.16）'});
+   if(req)toSeq(req);
+   giveBall(`${W(Y)}がエンドラインからスローイン（ボールを持った）`,{k:'endIn',team:Y});
+   touch(Y,['new24'],true,{shot:'スローインのボールが触れたら24秒スタート（p.35）'});
+  }else{
+   push({gap:2700,cap:'2本目… 外れてリングに当たった！',sfx:'rim',ball:{k:'rim',team:X},poss:X,chk:{shot:'表示は消したまま（まだ動かさない）',timer:'まだスタートしない（コート内の選手が触れてから）'}});
+   push({gap:1300,cap:'リバウンドに選手が触れた！',ball:{k:'rim',team:X},poss:X,ops:{gc:'start'},chk:{timer:'最後のフリースローが外れたら、コート内の選手が触れたときにスタート（p.27）',shot:'ショットクロックは触れただけではまだ。コントロールしたら（マニュアル）'}});
+   const Rr=Math.random()<.75?Y:X;
+   push({gap:1500,cap:`${W(Rr)}がリバウンドをコントロール`,ball:{k:'top',team:Rr},poss:Rr,ops:{sc:[Rr===X?'new14':'new24']},chk:{shot:Rr===X?'オフェンス側がコントロール→14秒でスタート（p.42）':'ディフェンス側がコントロール→24秒でスタート（p.36）'}});
+  }
+ }
+ function bHeld(X){const req=S.toReq,Z=S.arrowTeam;
+  push({gap:3200,cap:'ピッ！ ヘルドボール！（ジャンプボールシチュエーション）',whistle:true,ball:{k:'top',team:X},poss:X,ops:{gc:'stop',sc:['stop']},flexSc:true,chk:{...WH},tasks:[{role:'scorer',type:'hand',dl:4000,expl:'ヘルドボールの合図が出たら、矢じるしに手をそえて準備（p.55・マニュアル）'}],buzz:req?'ok':null,buzzExpl:'審判が笛を鳴らしたとき（ファウル以外）は知らせてOK（p.16）'});
+  if(req)toSeq(req);
+  giveBall(`矢じるしの向き→${W(Z)}のスローイン。審判がボールを渡した`,{k:'sideIn',team:Z},{chk:{arrow:'まだ矢じるしは変えない（スローインのボールが触れてから）'}});
+  S.arrowTeam=oth(Z);
+  touch(Z,[Z===X?'start':'new24'],true,{shot:Z===X?'ボールをコントロールしていたチームのスローインなので、リセットせず続きから（マニュアル付録）':'相手チームのボールになったので24秒にリセットしてスタート',arrow:'スローインのボールがコート内の選手に触れたら矢じるしを反転（p.56・マニュアル）'},{ops:{arrow:S.att[oth(Z)]}});}
+ function bReq(R){push({gap:2500,cap:`${W(R)}のコーチがスコアラーにタイムアウトを請求！`,sub:'（プレー中）',ball:{k:'top',team:S.poss},poss:S.poss,buzz:'ng',buzzExpl:'プレー中なので、まだ知らせない。笛・相手の得点などのタイミングを待つ（p.16）'});S.toReq=R;}
+ function runBlock(name,forced){
+  const X=S.poss;
+  if(name==='made')bMade(X,cfg.three&&Math.random()<.3?3:2);
+  else if(name==='missDef')bMissDef(X);else if(name==='missOff')bMissOff(X);
+  else if(name==='steal')bSteal(X);else if(name==='tip')bTip(X);
+  else if(name==='outDef')bOutDef(X);else if(name==='travel')bTravel(X);
+  else if(name==='foul')bFoul(X,false,forced);else if(name==='foulS')bFoul(X,true,forced);
+  else if(name==='held')bHeld(X);
+ }
+ const changers=['made','missDef','steal','travel'];
+ function chooseBlock(list){const m=sp.gapMul;if(S.sc.run&&!S.sc.hidden){if(S.sc.val<5*m+1.5)return rnd(['steal','travel']);if(S.sc.val<9*m+3){const i=list.findIndex(b=>changers.includes(b));if(i>=0)return list.splice(i,1)[0];return rnd(changers);}}return list.shift();}
+ // ---- シーン別の流れ ----
+ if(cfg.scene==='q1'){
+  push({gap:2600,cap:'審判がセンターサークルでトスアップの準備',sub:'矢じるしはまだどちらにも向けない（p.52）',ball:{k:'center'}});
+  push({gap:2600,cap:'トスアップ！ ジャンパーがボールをタップ！',ball:{k:'center'},ops:{gc:'start'},chk:{timer:'ジャンパーがボールをタップした瞬間にスタート（p.25）',shot:'タップしただけではショットクロックはまだ。どちらかがコントロールしてから（p.34）'}});
+  const X=rnd(['A','B']);
+  push({gap:1900,cap:`${W(X)}がボールをコントロール！`,ball:{k:'top',team:X},poss:X,ops:{sc:['new24'],arrow:S.att[oth(X)]},chk:{shot:'ジャンプボールのボールをコントロールした瞬間に24秒スタート（p.34）',arrow:`コントロールできなかった${W(oth(X))}の攻める方向に矢じるしを向ける（p.53）`}});
+  S.arrowTeam=oth(X);
+ }else if(cfg.scene==='q2'){
+  push({gap:2600,cap:'第2クォーター開始！ 矢じるしは白の攻める方向',sub:'ショットクロックは24を表示しておく（マニュアル）',ball:{k:'center'}});
+  giveBall(`矢じるしの向き→${W('A')}のスローイン。審判がボールを渡した`,{k:'sideIn',team:'A'},{chk:{arrow:'まだ反転しない（スローインのボールが触れてから）'}});
+  S.arrowTeam='B';
+  touch('A',['new24'],true,{shot:'スローインのボールが触れたら24秒スタート（p.35）',arrow:'スローインのボールがコート内の選手に触れたら矢じるしを反転（マニュアル）'},{ops:{arrow:S.att.B}});
+ }else{
+  push({gap:2600,cap:'第4Q 残り1:20 白24−22青。青のスローインから再開',sub:'白は3個、青は4個のチームファウル（青は赤い標識）',ball:{k:'sideIn',team:'B'},poss:'B'});
+  giveBall(`審判が${W('B')}のスローインする選手にボールを渡した`,{k:'sideIn',team:'B'});
+  touch('B',['new24'],true,{shot:'スローインのボールが触れたら24秒スタート（p.35）'});
+ }
+ let list;
+ if(cfg.scene==='q4'){
+  runBlock('foul',7); // 白7番の5回目・白4個目
+  list=shuffle(['made','missOff','foulS','held','made','missDef','steal','made','tip','foul','made','missDef','outDef','made','travel','made']);
+  const reqAt=1+Math.floor(Math.random()*2),trapAt=reqAt+3;let k=0;
+  while(!S.ended&&k<40){if(k===reqAt){const R=S.score.A<S.score.B?'A':'B';bReq(R);}if(k===trapAt&&!S.toReq){S.trap=S.toUsed.A?'B':'A';}
+   if(!list.length)list=shuffle(['made','missDef','steal','made','foul','missOff']);runBlock(chooseBlock(list));k++;}
+ }else{
+  list=shuffle(['made','made','made','missDef','missOff','steal','tip','outDef','travel','foul','foulS','held','made','missDef','foul']);
+  const reqAt=2+Math.floor(Math.random()*3),trapAt=reqAt+4;
+  for(let k=0;list.length&&k<30;k++){
+   if(k===reqAt)bReq(rnd(['A','B']));
+   if(k===trapAt&&!S.toReq){S.trap=S.toUsed.A?'B':'A';}
+   runBlock(chooseBlock(list));
+  }
+  push({gap:2600,cap:'ピッ！（練習はここまで）',sub:'',whistle:true,ball:{k:'top',team:S.poss},poss:S.poss,ops:{gc:'stop',sc:['stop']},chk:{...WH},final:true});
+ }
+ return{steps,init,pre};
+}
+
+/* ============ 画面遷移 ============ */
+const app=document.getElementById('app');
+let cfg=store.get('to-cfg',{role:'timer',scene:'q1',speed:'slow',fb:'now',three:false});
+if(!ROLES[cfg.role])cfg.role='timer';
+if(!MODES[cfg.mode])cfg.mode='learn';
+let R=null;
+function go(view){if(R){R.done=true;R=null;}document.body.style.background='';window.scrollTo(0,0);view();}
+
+function home(){
+ app.innerHTML=`<div class="wrap">
+ <div class="hero"><div class="ballico">🏀</div><h1>ミニバス TO練習</h1><p>試合と同じ流れで、タイマー・ショットクロック・スコアラー・アシスタントスコアラーを練習しよう！</p></div>
+ <div class="menu">
+  <button class="mcard" id="m1"><div class="ic">🏟️</div><div><b>実戦シミュレーション</b><span>試合が本当に進む！ 笛・ブザーに合わせて操作</span></div></button>
+  <button class="mcard" id="m2"><div class="ic">🧠</div><div><b>判断ドリル</b><span>「この場面、どうする？」をクイズで</span></div></button>
+  <button class="mcard" id="m3"><div class="ic">📘</div><div><b>ルール早見表</b><span>係ごとのポイント・U12のちがい</span></div></button>
+ </div>
+ <p class="lead" style="margin-top:18px">※ JBA「U12 TOマニュアル」「U12 TOサポーターマニュアル（2023年4月）」とスコアシート記入例をもとに作っています。大会によってルールがちがう場合は、大会のルールにしたがってください。</p>
+ </div>`;
+ document.getElementById('m1').onclick=()=>go(setup);
+ document.getElementById('m2').onclick=()=>go(drillStart);
+ document.getElementById('m3').onclick=()=>go(rules);
+}
+
+function setup(){
+ const best=store.get('to-best',{});
+ const roleH=Object.entries(ROLES).map(([k,r])=>`<button class="opt ${cfg.role===k?'sel':''}" data-role="${k}"><span class="ic">${r.icon}</span><b>${r.name}</b><small>${r.desc}</small></button>`).join('');
+ const sceneH=Object.entries(SCENES).map(([k,s])=>{const b=best[cfg.role+'-'+k];return `<button class="opt ${cfg.scene===k?'sel':''}" data-scene="${k}"><b>${s.name}</b><small>${s.desc}${b!=null?`<br>ベスト ${b}点`:''}</small></button>`;}).join('');
+ const spH=Object.entries(SPEEDS).map(([k,s])=>`<button class="opt ${cfg.speed===k?'sel':''}" data-speed="${k}"><b>${s.name}</b><small>${s.desc}</small></button>`).join('');
+ app.innerHTML=`<div class="wrap"><button class="back" id="bk">‹ もどる</button>
+ <h1>実戦シミュレーション</h1>
+ <h2>① 係をえらぶ</h2><div class="opts g2">${roleH}</div>
+ <div class="tips" style="margin-top:10px"><b>${ROLES[cfg.role].icon} ${ROLES[cfg.role].name}のポイント</b><ul>${ROLES[cfg.role].tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+ <h2>② 場面をえらぶ</h2><div class="opts">${sceneH}</div>
+ <h2>③ モード</h2><div class="opts">${Object.entries(MODES).map(([k,m])=>`<button class="opt ${cfg.mode===k?'sel':''}" data-mode="${k}"><b>${m.name}</b><small>${m.desc}</small></button>`).join('')}</div>
+ <h2>④ 試合の流れの速さ</h2><div class="opts g3">${spH}</div>
+ <h2>⑤ 設定</h2>
+ <div class="toggle"><span>3点シュートあり<br><small style="color:var(--mut)">U12は基本なし（採用する大会もある）</small></span><div class="sw ${cfg.three?'on':''}" id="t2"></div></div>
+ <div class="toggle"><span>音（笛・ブザー）</span><div class="sw ${soundOn?'on':''}" id="t3"></div></div>
+ <button class="big" id="go">スタート！</button>
+ </div>`;
+ app.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>{cfg.role=b.dataset.role;save();setup();});
+ app.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>{cfg.scene=b.dataset.scene;save();setup();});
+ app.querySelectorAll('[data-speed]').forEach(b=>b.onclick=()=>{cfg.speed=b.dataset.speed;save();setup();});
+ app.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{cfg.mode=b.dataset.mode;save();setup();});
+ document.getElementById('t2').onclick=()=>{cfg.three=!cfg.three;save();setup();};
+ document.getElementById('t3').onclick=()=>{soundOn=!soundOn;store.set('to-sound',soundOn);setup();};
+ document.getElementById('bk').onclick=()=>go(home);
+ document.getElementById('go').onclick=()=>{ac();blip(true);go(()=>startRun(clone(cfg)));};
+}
+function save(){store.set('to-cfg',cfg);}
+
+/* ============ 実戦：実行 ============ */
+function startRun(c){
+ const g=gen(c);
+ const tr=clone(g.init);
+ R={cfg:c,sp:SPEEDS[c.speed],steps:g.steps,pre:g.pre,i:0,el:-3000,last:performance.now(),paused:false,truth:tr,
+  user:{clock:tr.clock,run:false,hand:false,sw:null,sc:clone(tr.sc),arrow:tr.arrow,rs:clone(g.pre.rs),pf:clone(g.pre.pf),tfm:clone(g.pre.tfm),tom:clone(g.pre.tom),qends:clone(g.pre.qends),qendDone:false,table:clone(tr.table),showTf:null,callOpts:null,callTask:null},
+  tasks:[],judges:[],log:[],cur:null,disp:{score:{...tr.score},tf:{...tr.tf},q:tr.q},firstPress:null,done:false,tab:'rs',fteam:'A',endAt:null};
+ renderPlay();
+ R.paused=true;
+ const ctl={timer:['🟢 スタート／🔴 ストップ：ゲームクロック','✋ 手を上げる：最後のフリースローの前','計測スタート＋📢ブザー：タイムアウト（45秒）'],shot:['🟢 スタート／🔴 ストップ','24・14：秒数を入れ直す','消す：リセットして表示を消す'],scorer:['📢 タイムアウトの合図／✋ 矢じるしに手をそえる','◀ ▶：矢じるしの向き','ランニングスコア：数字をタップして記入','ファウル・TO：選手の行や数字をタップ'],asst:['📣 得点のコール（A→B）','① チームファウル → ② 個人ファウルのふだ','円筒の数（＋−）と赤い標識']}[R.cfg.role];
+ const md={learn:'操作が必要な場面で<b>試合が止まります</b>。正しい操作をすると次へすすみます。何もしないのが正解のときは「このまま」を押そう。まちがえたら正解と理由が出て、押すボタンが光ります。',practice:'試合はそのまま流れます。<b>ミスするとその場で止まって</b>解説が出ます。',real:'試合は止まりません。終わってから結果をまとめて見よう。'}[R.cfg.mode];
+ confirmBox(MODES[R.cfg.mode].name,md+'<div style="text-align:left;margin-top:10px;font-size:13px;color:var(--ink)"><b>'+ROLES[R.cfg.role].icon+' ボタン</b><br>'+ctl.join('<br>')+'</div>',[['はじめる！',()=>{R.paused=false;}]]);
+ requestAnimationFrame(loop);
+}
+function loop(now){
+ if(!R||R.done)return;
+ const dt=Math.min(.25,(now-R.last)/1000);R.last=now;
+ const w=R.wait;
+ if(w&&!w.resolved&&w.checkAt&&performance.now()>w.checkAt){w.checkAt=null;if(!R.card&&!waitEval().s)mistake((w.ex||'')+'<br><b>'+expectText(R.cfg.role)+'</b>');}
+ if(!R.paused&&!R.card&&!(w&&!w.resolved)){
+  const prevEl=R.el;R.el+=dt*1000;
+  if(R.el<0){const c=Math.ceil(-R.el/1000);const cd=document.getElementById('cd');if(cd)cd.textContent=c;}
+  else{const cd=document.getElementById('cdw');if(cd)cd.remove();
+   const d=prevEl<0?R.el/1000:dt;
+   tickTruth(d);tickUser(d);
+   while(R.i<R.steps.length&&R.el>=R.steps[R.i].t){const tt=R.steps[R.i].t;R.judges=R.judges.filter(j=>{if(j.at>tt)return true;judgeState(j.st);return false;});if(R.card||R.paused)break;fire(R.i);R.i++;if(R.wait&&!R.wait.resolved)break;}
+   procJudges();procTasks();
+   if(R.i>=R.steps.length&&!R.judges.length&&!R.tasks.some(t=>!t.done)){if(R.endAt==null)R.endAt=R.el+2200;if(R.el>R.endAt){finish();return;}}
+  }
+ }
+ draw();
+ requestAnimationFrame(loop);
+}
+function tickTruth(d){const t=R.truth;if(t.gcRun)t.clock=Math.max(.05,t.clock-d);if(t.sc.run)t.sc.val=Math.max(0,t.sc.val-d);}
+function tickUser(d){const u=R.user,r=R.cfg.role;
+ if(r==='timer'&&u.run){u.clock-=d;if(u.clock<=0){u.clock=0;u.run=false;}}
+ if(r==='shot'&&u.sc.run){u.sc.val-=d;if(u.sc.val<=0){u.sc.val=0;u.sc.run=false;}}}
+function roleKey(r){return{timer:'timer',shot:'shot',scorer:'arrow',asst:'asst'}[r];}
+function roleState(t,r){if(r==='timer')return JSON.stringify([t.gcRun,t.hand]);if(r==='shot')return JSON.stringify([t.sc.run,t.sc.hidden,t.sc.run?0:Math.round(t.sc.val)]);if(r==='scorer')return String(t.arrow);return JSON.stringify(t.table);}
+function fire(i){
+ const st=R.steps[i],nx=R.steps[i+1],role=R.cfg.role;
+ const before=roleState(R.truth,role);
+ applyOps(R.truth,st.ops);
+ if(st.end&&role==='timer'){R.user.clock=0;R.user.run=false;}
+ st._chg=before!==roleState(R.truth,role);
+ R.disp=st.disp;R.cur=st;R.firstPress=null;
+ if(st.whistle)whistle();
+ if(st.sfx==='swish')swish();else if(st.sfx==='rim')rimS();else if(st.sfx==='buzzer')buzzer();
+ if(st.toSignal&&role!=='scorer')setTimeout(()=>buzzer(.5),0);
+ showCap(st);moveCourt(st);
+ const jt=nx?Math.min(st.t+R.sp.win,nx.t-60):st.t+R.sp.win;
+ R.judges.push({at:jt,st});
+ (st.tasks||[]).filter(t=>t.role===role).forEach(t=>{const tk=Object.assign({},t,{due:st.t+(t.dl||R.sp.task),start:st.t,st,done:false});R.tasks.push(tk);
+  if(t.type==='call'){R.user.callOpts=mkCall(t);R.user.callTask=tk;}});
+ if(role==='scorer'&&st.buzz==='ok')R.tasks.push({type:'buzz',due:nx?nx.t-60:st.t+3000,start:st.t,st,done:false,expl:st.buzzExpl});
+ if(role==='timer'&&st.toSignal){R.tasks.push({type:'sw',start:st.t,due:st.t+3000,st,done:false,expl:'審判がタイムアウトの合図をしたら、すぐにストップウォッチで計りはじめる（p.31）'});
+  [35,45].forEach(s=>R.tasks.push({type:'tob',sec:s,target:st.t+s*1000,start:st.t,due:st.t+s*1000+2100,st,done:false,expl:`${s}秒でブザーを鳴らす（U12のタイムアウトは45秒。35秒と45秒でブザー：p.31）`}));}
+ if(R.cfg.mode==='learn'){
+  const ex=st.chk&&st.chk[roleKey(role)];
+  const my=R.tasks.filter(t=>t.st===st&&t.type!=='tob'&&t.type!=='buzz'&&!t.done);
+  const bz=role==='scorer'?st.buzz:null;
+  if(ex||my.length||bz){R.wait={st,ex,chg:!!ex&&!stateOK(st),tasks:my,buzz:bz,stay:false,miss:false,checkAt:null,resolved:false};R.judges=R.judges.filter(j=>j.st!==st);R.hints=null;}
+ }
+ renderPanel();
+}
+function mkCall(t){const c=`${t.a} 対 ${t.b}`;const set=new Set([c]);const cand=[`${t.b} 対 ${t.a}`,`${t.a-1} 対 ${t.b}`,`${t.a} 対 ${t.b+1}`,`${t.a+2} 対 ${t.b}`,`${t.a} 対 ${Math.max(0,t.b-2)}`];cand.forEach(x=>{if(set.size<3)set.add(x);});return{right:c,opts:shuffle([...set])};}
+function expectText(role){const t=R.truth;
+ if(role==='timer')return t.gcRun?'正しくは：ゲームクロックを動かす':'正しくは：ゲームクロックを止める'+(t.hand?'（手を上げて準備）':'');
+ if(role==='shot')return t.sc.hidden?'正しくは：表示を消す（止める）':`正しくは：${t.sc.run?'動かす':'止める'}（${Math.ceil(t.sc.val)}秒）`;
+ if(role==='scorer')return '正しくは：矢じるし '+(t.arrow==='L'?'◀（左）':t.arrow==='R'?'▶（右）':'どちらにも向けない');
+ return `正しくは：白 円筒${t.table.A.n}${t.table.A.red?'・赤':''}／青 円筒${t.table.B.n}${t.table.B.red?'・赤':''}`;}
+function stateOK(st){
+ const role=R.cfg.role,u=R.user,tr=R.truth;let ok=true;
+ if(role==='timer'){ok=u.run===tr.gcRun&&Math.abs(u.clock-tr.clock)<=1.6;if(st.chk&&st.chk.hand&&!u.hand)ok=false;}
+ else if(role==='shot'){ok=u.sc.run===tr.sc.run;if(ok&&!st.flexSc)ok=u.sc.hidden===tr.sc.hidden&&(tr.sc.hidden||Math.abs(u.sc.val-tr.sc.val)<=1.6);}
+ else if(role==='scorer')ok=u.arrow===tr.arrow;
+ else ok=['A','B'].every(t=>u.table[t].n===tr.table[t].n&&u.table[t].red===tr.table[t].red);
+ return ok;
+}
+/* ---- 学習モード ---- */
+function waitEval(){const w=R.wait;const s=!w.ex||stateOK(w.st);const t=w.tasks.every(x=>x.done);const b=w.buzz!=='ok'||w.buzzDone;const needStay=!w.chg&&!w.tasks.length&&w.buzz!=='ok';return{s,t,b,needStay,done:needStay?(s&&w.stay):(s&&t&&b)};}
+function waitExpl(w){const L=[];if(w.ex)L.push(w.ex);w.tasks.forEach(t=>{if(t.expl)L.push(t.expl);});if(w.buzz)L.push(w.st.buzzExpl);return L;}
+function afterAction(){const w=R.wait;if(!w||w.resolved||R.card)return;const e=waitEval();if(e.done){resolveWait();return;}if(w.ex&&!e.s)w.checkAt=performance.now()+2600;}
+function resolveWait(){const w=R.wait;w.resolved=true;w.checkAt=null;R.hints=null;const L=waitExpl(w);
+ if(!w.miss)R.log.push({g:w.hinted?'t':'o',cap:w.st.cap,text:L.join(' ／ ')+(w.hinted?'（ヒントあり）':'')});blip(true);
+ showCard('ok',w.miss?'できた！ その調子 👍':w.hinted?'できた！（ヒントあり）':'せいかい！ グッジョブ 👍',L.map(l=>'・'+l).join('<br>'),[['つぎへ ▶',()=>{closeCard();R.wait=null;snapUser(false);renderPanel();}]]);}
+function mistake(text){const w=R.wait;if(!w||w.resolved)return;
+ if(!w.miss){w.miss=true;R.log.push({g:'x',cap:w.st.cap,text:text.replace(/<[^>]+>/g,' ')});}
+ blip(false);w.checkAt=null;
+ showCard('ng','ざんねん… もう一度やってみよう',text+'<div class="lhint">💡「やってみる」を押すと、押すボタンが光ります</div>',[['やってみる',()=>{closeCard();w.stay=false;setHints();const e=waitEval();if(e.done&&!e.needStay)resolveWait();}],['正解を見てすすむ',()=>{closeCard();autoSolve();},'k']]);}
+function setHints(){if(!R)return;R.hints=computeHints();if(R.wait)R.wait.hinted=true;renderPanel();}
+function autoSolve(){const w=R.wait;snapUser(true);w.tasks.forEach(t=>{t.done=true;if(t.type==='qend')R.user.qendDone=true;if(t.type==='tom'&&!R.user.tom[t.team].includes(t.q))R.user.tom[t.team].push(t.q);if(t.type==='tfm')R.user.tfm[R.truth.q][t.team]=t.count;if(t.type==='rs')R.user.rs[t.team][t.total]={mark:t.mark,num:t.num,q:R.truth.q};if(t.type==='foul'){const a=R.user.pf[t.team][t.num]=R.user.pf[t.team][t.num]||[];if(!a.some(f=>f.q===R.truth.q&&f.t===t.ftype&&f.auto))a.push({t:t.ftype,q:R.truth.q,auto:true});}if(t.type==='call')R.user.callOpts=null;});w.buzzDone=true;R.tasks.forEach(t=>{if(t.type==='buzz'&&t.st===w.st)t.done=true;});w.stay=true;closeSheet();resolveWait();}
+function computeHints(){const h=[],u=R.user,tr=R.truth,role=R.cfg.role,w=R.wait;
+ if(w&&w.ex){
+  if(role==='timer'){if(tr.gcRun!==u.run)h.push(tr.gcRun?'tStart':'tStop');if(tr.hand&&!u.hand)h.push('tHand');}
+  if(role==='shot'){const c=u.sc,t=tr.sc;if(t.hidden){if(!c.hidden||c.run)h.push('sHide');}else{if(c.hidden||Math.abs(c.val-t.val)>1.6){if(Math.abs(t.val-24)<1.6)h.push('s24');else if(Math.abs(t.val-14)<1.6)h.push('s14');}if(c.run!==t.run||c.hidden)h.push(t.run?'sStart':'sStop');}}
+  if(role==='scorer'&&u.arrow!==tr.arrow&&tr.arrow)h.push('arrow'+tr.arrow);
+  if(role==='asst')['A','B'].forEach(t=>{const d=tr.table[t].n-u.table[t].n;if(d>0)h.push('tbl'+t+'+');if(d<0)h.push('tbl'+t+'-');if(tr.table[t].red!==u.table[t].red)h.push('red'+t);});
+ }
+ (w?w.tasks:R.tasks).filter(t=>!t.done).forEach(t=>{
+  if(t.type==='rs'){h.push('rs'+t.team+t.total,'m'+t.mark,'n'+t.num);R.tab='rs';}
+  else if(t.type==='foul'){h.push('pf'+t.team+t.num,'pt'+t.ftype);R.tab='pf';R.fteam=t.team;}
+  else if(t.type==='tfm'){h.push('tfm'+t.team);R.tab='pf';R.fteam=t.team;}
+  else if(t.type==='tom'){h.push('tom'+t.team+t.q);R.tab='pf';R.fteam=t.team;}
+  else if(t.type==='call')h.push('call'+t.a+'-'+t.b);
+  else if(t.type==='fshow')h.push(R.user.showTf==null?'stf'+t.tc:'spf'+t.pc);
+  else if(t.type==='sw')h.push('swStart');else if(t.type==='tob')h.push('tBuzz');
+  else h.push(t.type);});
+ if(w&&w.buzz==='ok'&&!w.buzzDone)h.push('buzzTO');
+ if(w&&!w.chg&&!w.tasks.length&&w.buzz!=='ok')h.push('stay');
+ return h;}
+function applyHints(root){if(!R||!root)return;root.querySelectorAll('[data-h]').forEach(b=>b.classList.toggle('hint',!!R.hints&&R.hints.includes(b.dataset.h)));}
+function showCard(kind,title,body,btns){closeCard();const p=document.getElementById('play');if(!p)return;const c=document.createElement('div');c.className='lcard '+kind;c.id='lcard';
+ c.innerHTML=`<div class="lt">${title}</div><div class="lb">${body}</div><div class="lbtns">${btns.map((b,i)=>`<button class="pbtn ${b[2]||'o'}" data-i="${i}">${b[0]}</button>`).join('')}</div>`;
+ p.appendChild(c);R.card=true;c.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(R)R.last=performance.now();btns[+b.dataset.i][1]();});}
+function closeCard(){const c=document.getElementById('lcard');if(c)c.remove();if(R)R.card=false;}
+function judgeState(st){
+ const role=R.cfg.role,u=R.user,tr=R.truth;const ok=stateOK(st);
+ const ex=st.chk&&st.chk[roleKey(role)];
+ if(!ok){addLog('x',st,ex||'この場面では操作しない（そのまま）',expectText(role));snapUser(true);}
+ else{
+  if(ex){let g='o',rt=null;if(st._chg&&R.firstPress&&R.firstPress.st===st){rt=(R.firstPress.el-st.t)/1000;if(rt*1000>R.sp.slow)g='t';}addLog(g,st,ex,null,rt);}
+  snapUser(false);
+ }
+}
+function snapUser(full){const u=R.user,tr=R.truth,r=R.cfg.role;
+ if(r==='timer'){if(full){u.run=tr.gcRun;u.hand=tr.hand;}u.clock=tr.clock;}
+ if(r==='shot'){if(full)u.sc=clone(tr.sc);else if(u.sc.run&&tr.sc.run)u.sc.val=tr.sc.val;}
+ if(r==='scorer'&&full)u.arrow=tr.arrow;
+ if(r==='asst'&&full)u.table=clone(tr.table);
+ if(full)renderPanel();}
+function procJudges(){R.judges=R.judges.filter(j=>{if(R.el<j.at)return true;judgeState(j.st);return false;});}
+const MISS={rs:'得点の記録がまだ：',foul:'ファウルの記録がまだ：',tfm:'チームファウルの記録がまだ：',tom:'タイムアウトの記録がまだ：',five:'5ファウルを知らせていない：',hand:'矢じるしに手をそえていない：',qend:'Qの終わりのしるしがまだ：',buzz:'タイムアウトを知らせていない：',call:'得点のコールがまだ：',fshow:'ファウル数を示していない：',sw:'ストップウォッチをスタートしていない：',tob:'ブザーを鳴らしていない：'};
+function procTasks(){let ch=false;R.tasks.forEach(t=>{if(!t.done&&R.el>=t.due){t.done=true;addLog('x',t.st,(MISS[t.type]||'')+(t.expl||''));if(t.type==='call'){R.user.callOpts=null;}if(t.type==='fshow')R.user.showTf=null;ch=true;}});if(ch)renderPanel();}
+function pendingTask(type,pred){return R.tasks.find(t=>!t.done&&t.type===type&&(!pred||pred(t)));}
+function addLog(g,st,text,extra,rt){
+ if(g==='x'&&R.cfg.mode==='learn'&&R.wait&&!R.wait.resolved){mistake(text+(extra?'<br><b>'+extra+'</b>':''));return;}
+ R.log.push({g,cap:st?st.cap:'',text,extra,rt});
+ if(g==='x'&&R.cfg.mode!=='real'){blip(false);
+  const prev=R.card&&document.querySelector('#lcard.ng .lb');
+  if(prev){prev.insertAdjacentHTML('beforeend','<hr>'+text+(extra?'<br><b>'+extra+'</b>':''));return;}
+  R.paused=true;showCard('ng','ミス！ ここを確認しよう','<div class="c">場面：'+(st?st.cap:'')+'</div>'+text+(extra?'<br><b>'+extra+'</b>':''),[['つづける ▶',()=>{closeCard();R.paused=false;renderPanel();}]]);return;}
+ if(R.cfg.mode!=='real'){const el=document.getElementById('toast');if(el){el.className='toast show '+g;el.textContent=g==='o'?`グッジョブ！${rt!=null?' '+rt.toFixed(1)+'秒':''}`:g==='t'?`ちょっとおそい（${rt!=null?rt.toFixed(1):''}秒）`:'✕ '+shortTxt(text);clearTimeout(R.tt);R.tt=setTimeout(()=>{el.className='toast';},g==='x'?2600:1300);}
+  const ex=document.getElementById('capex');if(ex&&g==='x'){ex.textContent='💡 '+text+(extra?' → '+extra:'');ex.style.display='block';clearTimeout(R.te);R.te=setTimeout(()=>{ex.style.display='none';},4200);}
+  blip(g!=='x');}
+}
+function shortTxt(t){t=t.replace(/（[^）]*p\.[^）]*）/g,'').replace(/（マニュアル[^）]*）/g,'');return t.length>26?t.slice(0,25)+'…':t;}
+function press(){if(R&&!R.firstPress&&R.cur)R.firstPress={el:R.el,st:R.cur};}
+function taskDone(t,grade,text,extra){
+ if(grade==='x'&&R.cfg.mode==='learn'&&R.wait&&!R.wait.resolved&&R.wait.tasks.includes(t)){mistake(text||t.expl);return;}
+ if(grade==='o'&&R.cfg.mode==='learn'&&R.wait&&R.wait.tasks.includes(t)){t.done=true;return;}
+ t.done=true;const rt=(R.el-t.start)/1000;addLog(grade,t.st,text||t.expl,extra,grade==='x'?null:rt);}
+
+/* ---- ユーザー操作 ---- */
+const A={
+ tStart(){const u=R.user;if(!u.run&&u.clock>0){u.run=true;u.hand=false;}},
+ tStop(){R.user.run=false;},
+ tHand(){R.user.hand=true;renderPanel();},
+ swStart(){const u=R.user;u.sw=R.el;const t=pendingTask('sw');if(t){const rt=(R.el-t.start)/1000;taskDone(t,rt>2?'t':'o');}else addLog('x',R.cur,'今はストップウォッチを使わない（タイムアウトの合図があってから計る：p.31）');renderPanel();},
+ tBuzz(){buzzer(.5);const ts=R.tasks.filter(t=>!t.done&&t.type==='tob');if(!ts.length){addLog('x',R.cur,'今はブザーを鳴らさない（タイムアウトの35秒・45秒のとき）');return;}
+  ts.sort((a,b)=>Math.abs(a.target-R.el)-Math.abs(b.target-R.el));const t=ts[0],d=(R.el-t.target)/1000;
+  if(Math.abs(d)<=2){t.done=true;R.log.push({g:Math.abs(d)<=1?'o':'t',cap:t.st.cap,text:`${t.sec}秒のブザー（ずれ ${d>=0?'+':''}${d.toFixed(1)}秒）`});if(R.cfg.mode!=='real'){const el=document.getElementById('toast');el.className='toast show '+(Math.abs(d)<=1?'o':'t');el.textContent=`${t.sec}秒ブザー ${d>=0?'+':''}${d.toFixed(1)}秒`;clearTimeout(R.tt);R.tt=setTimeout(()=>el.className='toast',1500);}}
+  else addLog('x',t.st,`${t.sec}秒のブザーには${d<0?'早すぎ':'おそすぎ'}（${d.toFixed(1)}秒）`);},
+ sStart(){const c=R.user.sc;c.run=true;c.hidden=false;},
+ sStop(){R.user.sc.run=false;},
+ s24(){const c=R.user.sc;c.val=24;c.hidden=false;},
+ s14(){const c=R.user.sc;c.val=14;c.hidden=false;},
+ sHide(){R.user.sc={val:24,run:false,hidden:true};},
+ arrow(d){R.user.arrow=d;renderPanel();},
+ hand(){const t=pendingTask('hand');if(t)taskDone(t,'o');else addLog('x',R.cur,'今は矢じるしに手をそえなくてよい（ヘルドボールの合図のとき）');},
+ stay(){const w=R.wait;if(!w||w.resolved)return;const e=waitEval();if(e.needStay&&e.s){w.stay=true;resolveWait();}else if(e.needStay)mistake('操作が変わってしまっています。<br><b>'+expectText(R.cfg.role)+'</b>');else mistake('ここでは操作が必要！<br>'+(waitExpl(w).join('<br>')));},
+ buzzTO(){buzzer(.5);if(R.cfg.mode==='learn'&&R.wait&&R.wait.buzz==='ok'&&!R.wait.resolved){R.wait.buzzDone=true;R.tasks.forEach(t=>{if(t.type==='buzz'&&t.st===R.wait.st)t.done=true;});return;}const t=pendingTask('buzz');if(t){taskDone(t,'o',t.expl);return;}
+  const c=R.cur||{};addLog('x',c,c.buzz==='ng'?c.buzzExpl:'今はタイムアウト（の合図）を知らせるタイミングではない（p.16-19）');},
+ five(){const t=pendingTask('five');if(t)taskDone(t,'o');else addLog('x',R.cur,'5回目のファウルの選手はいない');},
+ qend(){const t=pendingTask('qend');if(t){R.user.qendDone=true;taskDone(t,'o');}else addLog('x',R.cur,'まだクォーターは終わっていない');renderPanel();},
+ rs(team,total,mark,num){const u=R.user;u.rs[team][total]={mark,num,q:R.truth.q};
+  const t=pendingTask('rs',x=>x.team===team);
+  if(!t){addLog('x',R.cur,`${TN[team]}の得点はまだない／すでに記録ずみ`);}
+  else if(t.total===total&&t.mark===mark&&t.num===num)taskDone(t,'o');
+  else taskDone(t,'x',`記入ミス：${t.expl}`);
+  renderPanel();},
+ foul(team,num,type){const u=R.user;(u.pf[team][num]=u.pf[team][num]||[]).push({t:type,q:R.truth.q});
+  const t=pendingTask('foul',x=>x.team===team);
+  if(!t)addLog('x',R.cur,`${TN[team]}のファウルはまだない／すでに記録ずみ`);
+  else if(t.num===num&&t.ftype===type)taskDone(t,'o');
+  else taskDone(t,'x',`記入ミス：${t.expl}`);
+  renderPanel();},
+ tfm(team){const u=R.user,q=R.truth.q;if(u.tfm[q][team]>=4)return;u.tfm[q][team]++;const n=u.tfm[q][team];
+  const t=pendingTask('tfm',x=>x.team===team);if(!t)addLog('x',R.cur,`${TN[team]}のチームファウルはまだない`);else if(t.count===n)taskDone(t,'o');else taskDone(t,'x',`記入ミス：${t.expl}`);renderPanel();},
+ tom(team,q){const u=R.user;if(u.tom[team].includes(q))return;u.tom[team].push(q);
+  const t=pendingTask('tom',x=>x.team===team);if(!t)addLog('x',R.cur,`${TN[team]}のタイムアウトはとられていない`);else if(t.q===q)taskDone(t,'o');else taskDone(t,'x',`記入ミス：${t.expl}`);renderPanel();},
+ call(opt){const u=R.user,t=u.callTask;const right=t&&opt===`${t.a} 対 ${t.b}`;if(right||R.cfg.mode!=='learn')u.callOpts=null;if(t&&!t.done){if(right)taskDone(t,'o');else taskDone(t,'x',`コールちがい：${t.expl}`);}renderPanel();},
+ showTf(n){const u=R.user;const t=pendingTask('fshow');if(!t){addLog('x',R.cur,'ファウルの報告がないときは表示しない');return;}u.showTf=n;renderPanel();},
+ showPf(n){const u=R.user;const t=pendingTask('fshow');if(!t){addLog('x',R.cur,'ファウルの報告がないときは表示しない');return;}
+  if(u.showTf==null){taskDone(t,'x','チームファウルを先に示し、そのあと個人ファウル（マニュアル）');}
+  else if(u.showTf===t.tc&&n===t.pc)taskDone(t,'o');else taskDone(t,'x',`数がちがう：${t.expl}`);u.showTf=null;renderPanel();},
+ tbl(team,d){const c=R.user.table[team];c.n=Math.max(0,Math.min(4,c.n+d));renderPanel();},
+ red(team){const c=R.user.table[team];c.red=!c.red;renderPanel();}
+};
+function act(name,...args){if(!R||R.paused||R.card||R.el<0)return;press();A[name](...args);if(R&&R.cfg.mode==='learn'&&name!=='stay')afterAction();draw();}
+
+/* ---- 描画 ---- */
+function renderPlay(){
+ const r=ROLES[R.cfg.role];
+ app.innerHTML=`<div class="play" id="play">
+ <div class="topbar"><button id="quit">✕</button><div>${r.icon} ${r.name}・${SCENES[R.cfg.scene].name}</div><button id="pause">⏸</button></div>
+ <div class="board">
+  <div class="tm"><div class="nm">白（A）</div><div class="sc" id="sA">0</div><div class="mini"><span class="cyl" id="cA"></span><span class="red" id="rA"></span></div></div>
+  <div class="mid"><div class="qq" id="qq">第1Q</div><div class="gc ${R.cfg.role==='timer'?'mine':''}" id="gc">6:00</div><div class="scl ${R.cfg.role==='shot'?'mine':''}" id="scl">24</div><div class="arw ${R.cfg.role==='scorer'?'mine':''}" id="arw"><span id="aL">◀</span><span id="aR">▶</span></div></div>
+  <div class="tm"><div class="nm" style="color:#60a5fa">青（B）</div><div class="sc" id="sB">0</div><div class="mini"><span class="red" id="rB"></span><span class="cyl" id="cB"></span></div></div>
+ </div>
+ <div class="courtwrap">${courtSVG()}</div>
+ <div class="cap" id="cap"><div class="toast" id="toast"></div><div class="capmain" id="capm">準備はいい？</div><div class="capsub" id="caps">${R.cfg.role==='timer'?'あなたのゲームクロックが得点板に出ます':R.cfg.role==='shot'?'あなたのショットクロックが得点板に出ます':'まわりの係はコンピューターが担当します'}</div><div class="capsub" id="capex" style="display:none;color:#fca5a5"></div></div>
+ <div class="panel" id="panel"></div>
+ </div>
+ <div class="modal" id="cdw" style="background:rgba(0,0,0,.75)"><div><div class="count" id="cd">3</div><div style="color:#fff;text-align:center;font-weight:800">${r.icon} ${r.name}</div></div></div>`;
+ document.getElementById('quit').onclick=()=>{R.paused=true;confirmBox('練習をやめますか？','',[['やめる',()=>go(setup)],['つづける',()=>{R.paused=false;}]]);};
+ document.getElementById('pause').onclick=()=>{R.paused=true;confirmBox('一時停止中','',[['つづける',()=>{R.paused=false;}],['やめる',()=>go(setup)]]);};
+ moveCourt({ball:{k:'center'}});
+ renderPanel();draw();
+}
+function confirmBox(title,msg,btns){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class="box"><h3>${title}</h3>${msg?`<p>${msg}</p>`:''}<div class="${btns.length>1?'grid2':''}" style="margin-top:12px">${btns.map((b,i)=>`<button class="pbtn ${i===0?'o':'k'}" style="font-size:16px;width:100%" data-i="${i}">${b[0]}</button>`).join('')}</div></div>`;document.body.appendChild(m);m.querySelectorAll('button').forEach(b=>b.onclick=()=>{m.remove();if(R)R.last=performance.now();btns[+b.dataset.i][1]();});}
+function draw(){
+ if(!R)return;const role=R.cfg.role,u=R.user,tr=R.truth,d=R.disp;
+ const $=id=>document.getElementById(id);if(!$('gc'))return;
+ $('sA').textContent=d.score.A;$('sB').textContent=d.score.B;$('qq').textContent=`第${d.q}Q`;
+ const gcV=role==='timer'?u.clock:tr.clock,gcR=role==='timer'?u.run:tr.gcRun;
+ $('gc').textContent=fmtClock(gcV);$('gc').classList.toggle('run',gcR);
+ const sc=role==='shot'?u.sc:tr.sc;$('scl').textContent=sc.hidden?'':Math.ceil(Math.max(0,sc.val-1e-6));$('scl').classList.toggle('off',sc.hidden);
+ const ar=role==='scorer'?u.arrow:tr.arrow;$('aL').className=ar==='L'?'on':'';$('aR').className=ar==='R'?'on':'';
+ const tb=role==='asst'?u.table:tr.table;
+ ['A','B'].forEach(t=>{$('c'+t).innerHTML=[1,2,3,4].map(i=>`<i class="${tb[t].n>=i?'on':''}"></i>`).join('');$('r'+t).className='red'+(tb[t].red?' on':'');});
+ if(role==='timer'){const s=$('swd');if(s)s.textContent=u.sw==null?'0.0':((R.el-u.sw)/1000).toFixed(1);const h=$('hb');if(h)h.classList.toggle('on-hand',u.hand);}
+}
+function showCap(st){const c=document.getElementById('cap');if(!c)return;document.getElementById('capm').textContent=st.cap;document.getElementById('caps').textContent=st.sub||'';if(st.whistle||st.sfx==='buzzer'){c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash');}}
+/* ---- コート ---- */
+function courtSVG(){
+ const pl=(t,i)=>`<g class="pl" id="p${t}${i}"><circle r="6.5" fill="${t==='A'?'#ffffff':'#2563eb'}" stroke="${t==='A'?'#334155':'#1e3a8a'}" stroke-width="1.5"/></g>`;
+ return `<svg class="court" viewBox="0 0 300 160">
+ <rect x="0" y="0" width="300" height="160" fill="#e9b872"/>
+ <g fill="none" stroke="#fff" stroke-width="1.6">
+ <rect x="6" y="6" width="288" height="148"/><line x1="150" y1="6" x2="150" y2="154"/><circle cx="150" cy="80" r="16"/>
+ <path d="M6 58 H52 V102 H6"/><circle cx="52" cy="80" r="16"/><path d="M294 58 H248 V102 H294"/><circle cx="248" cy="80" r="16"/>
+ <path d="M6 22 H20 A62 62 0 0 1 20 138 H6"/><path d="M294 22 H280 A62 62 0 0 0 280 138 H294"/>
+ </g>
+ <rect x="6" y="58" width="46" height="44" fill="#c2410c" opacity=".35"/><rect x="248" y="58" width="46" height="44" fill="#1d4ed8" opacity=".25"/>
+ <line x1="11" y1="70" x2="11" y2="90" stroke="#111" stroke-width="2"/><circle cx="16" cy="80" r="4" fill="none" stroke="#ef4444" stroke-width="1.6"/>
+ <line x1="289" y1="70" x2="289" y2="90" stroke="#111" stroke-width="2"/><circle cx="284" cy="80" r="4" fill="none" stroke="#ef4444" stroke-width="1.6"/>
+ <text id="attL" x="75" y="150" font-size="9" fill="#7c2d12" font-weight="700" text-anchor="middle"></text><text id="attR" x="225" y="150" font-size="9" fill="#7c2d12" font-weight="700" text-anchor="middle"></text>
+ ${[0,1,2,3,4].map(i=>pl('A',i)).join('')}${[0,1,2,3,4].map(i=>pl('B',i)).join('')}
+ <g class="ball" id="ball"><circle r="4.2" fill="#f97316" stroke="#7c2d12" stroke-width="1"/></g>
+ </svg>`;
+}
+function moveCourt(st){
+ if(!R||!st.ball)return;const att=R.truth.att;const b=st.ball||{k:'center'};
+ const aL=document.getElementById('attL'),aR=document.getElementById('attR');
+ if(aL){const tL=att.A==='L'?'A':'B';aL.textContent=`◀ ${TN[tL]}の攻め`;aR.textContent=`${TN[oth(tL)]}の攻め ▶`;}
+ const X=b.team||st.poss||'A',Y=oth(X),dX=att[X],s=dX==='R'?1:-1,rx=dX==='R'?284:16;
+ const P={A:[],B:[]};let ball;
+ const spots=[[-60,-48],[-80,0],[-60,48],[-26,-34],[-26,34]];
+ const off=spots.map(([dx,dy])=>[rx+s*dx,80+dy]);
+ const def=off.map(([x,y])=>[x+s*13,y+(80-y)*.15]);
+ if(b.k==='center'){
+  ['A','B'].forEach(t=>{const sg=att[t]==='R'?-1:1;P[t]=[[150+sg*9,80],[150+sg*34,48],[150+sg*34,112],[150+sg*60,64],[150+sg*60,96]];});ball=[150,74];
+ }else if(b.k==='endIn'){
+  const own=dX==='R'?16:284;
+  P[X]=[[dX==='R'?2:298,104],[own+s*40,60],[own+s*70,100],[own+s*100,40],[150,110]];P[Y]=[[own+s*20,90],[own+s*45,70],[own+s*75,92],[own+s*95,52],[150+s*14,100]];ball=P[X][0];
+ }else if(b.k==='sideIn'){
+  const tx=150+s*45;P[X]=[[tx,1],[tx+s*20,40],[rx+s*-30,70],[tx-s*25,60],[rx+s*-60,110]];P[Y]=P[X].map(([x,y],i)=>i===0?[tx,16]:[x+s*12,y+6]);ball=P[X][0];
+ }else if(b.k==='ft'){
+  const fx=rx-s*48;P[X]=[[fx,80],[rx-s*22,56],[rx-s*32,104],[150+s*-10,60],[150,110]];P[Y]=[[rx-s*12,56],[rx-s*12,104],[rx-s*30,56],[rx-s*22,104],[150+s*10,90]];ball=[fx+s*4,80];
+ }else{
+  P[X]=off;P[Y]=def;
+  const hold={top:1,wing:0,shoot:3}[b.k];
+  if(b.k==='rim')ball=[rx-s*6,80];else ball=off[hold!=null?hold:1];
+ }
+ ['A','B'].forEach(t=>P[t].forEach(([x,y],i)=>{const e=document.getElementById('p'+t+i);if(e)e.style.transform=`translate(${x}px,${y}px)`;}));
+ const be=document.getElementById('ball');if(be)be.style.transform=`translate(${ball[0]+(b.k==='rim'||b.k==='center'?0:5)}px,${ball[1]-(b.k==='rim'?0:4)}px)`;
+}
+
+/* ---- 操作パネル ---- */
+function renderPanel(){
+ const p=document.getElementById('panel');if(!p||!R)return;const role=R.cfg.role,u=R.user;
+ let h='';
+ if(role==='timer'){
+  h=`<div class="grid2"><button class="pbtn r huge" data-a="tStop">ストップ<small>「ストップ！」で手を上げる</small></button><button class="pbtn g huge" data-a="tStart">スタート<small>「スタート！」手をにぎって下ろす</small></button></div>
+  <button class="pbtn o" id="hb" data-a="tHand" style="width:100%;margin-top:10px;font-size:17px">✋ 手を上げる（スタートの準備）</button>
+  <div class="lbl">タイムアウトの計測（ストップウォッチ）</div>
+  <div class="swbox"><div class="swdisp" id="swd">0.0</div><div class="grid2" style="margin-top:8px"><button class="pbtn b" data-a="swStart" style="font-size:16px">計測スタート</button><button class="pbtn y" data-a="tBuzz" style="font-size:16px">📢 ブザー</button></div></div>`;
+ }else if(role==='shot'){
+  h=`<div class="grid2"><button class="pbtn r huge" data-a="sStop">ストップ</button><button class="pbtn g huge" data-a="sStart">スタート</button></div>
+  <div class="grid3" style="margin-top:10px"><button class="pbtn b" data-a="s24">24<small>リセット</small></button><button class="pbtn o" data-a="s14">14<small>リセット</small></button><button class="pbtn k" data-a="sHide">消す<small>リセット＋表示なし</small></button></div>
+  <div class="lbl" style="margin-top:14px">💡 24・14は数字を入れ直すボタン（動いているときはそのまま動く）。「消す」は止めて表示を消します。</div>`;
+ }else if(role==='scorer'){
+  h=scorerPanel();
+ }else{
+  h=asstPanel();
+ }
+ const w=R.wait;
+ if(R.cfg.mode==='learn'&&w&&!w.resolved)h=`<div class="prompt"><div>🟠 <b>ここで操作！ どうする？</b><br><small>${w.tasks.length?'記録・合図もわすれずに':'正しいと思う操作をしよう'}</small></div><div class="row"><button data-a="stay" data-h="stay">このまま<br>（何もしない）</button><button data-ui="hint" class="hb">💡 ヒント</button></div></div>`+h;
+ p.innerHTML=h;
+ p.querySelectorAll('[data-a]').forEach(b=>{if(!b.dataset.h)b.dataset.h=b.dataset.a;});
+ p.querySelectorAll('[data-a]').forEach(b=>{b.onpointerdown=e=>{e.preventDefault();const args=b.dataset.args?JSON.parse(b.dataset.args):[];act(b.dataset.a,...args);};});
+ p.querySelectorAll('[data-ui]').forEach(b=>b.onclick=()=>{const v=b.dataset;if(v.ui==='tab'){R.tab=v.v;renderPanel();}else if(v.ui==='fteam'){R.fteam=v.v;renderPanel();}else if(v.ui==='rs'){openRs(v.team,+v.tot);}else if(v.ui==='hint'){setHints();}else if(v.ui==='pf'){openPf(v.team,+v.num);}});
+ if(role==='scorer'&&R.tab==='rs'){const sc=document.getElementById('rsScroll');const tgt=document.getElementById('rsCur');const key=R.disp.score.A+'-'+R.disp.score.B;if(sc&&tgt){if(key!==R.scrollKey){R.scrollKey=key;R.scrollTop=Math.max(0,tgt.offsetTop-sc.offsetTop-90);}sc.scrollTop=R.scrollTop;sc.onscroll=()=>{R.scrollTop=sc.scrollTop;};}}
+ applyHints(p);
+ const hn=p.querySelector('.hint:not([data-h="stay"])');if(hn&&R.hints&&hn.closest('#rsScroll')){const sc=document.getElementById('rsScroll');sc.scrollTop=Math.max(0,hn.offsetTop-sc.offsetTop-60);R.scrollTop=sc.scrollTop;}
+ draw();
+}
+const qc=q=>(q===1||q===3)?'var(--q13)':'var(--q24)';
+function scorerPanel(){
+ const u=R.user,q=R.truth.q;
+ let h=`<div class="srow">
+  <button class="o" data-a="buzzTO">📢<br>タイムアウト<br>の合図</button>
+  <button class="k" data-a="hand">✋<br>矢じるしに<br>手をそえる</button>
+  <button class="${u.arrow==='L'?'r':'k'}" data-a="arrow" data-h="arrowL" data-args='["L"]' style="font-size:22px">◀</button>
+  <button class="${u.arrow==='R'?'r':'k'}" data-a="arrow" data-h="arrowR" data-args='["R"]' style="font-size:22px">▶</button>
+  <button class="b" data-a="five">🖐<br>5ファウル<br>を知らせる</button></div>
+  <div class="tabs"><button data-ui="tab" data-v="rs" class="${R.tab==='rs'?'on':''}">ランニングスコア</button><button data-ui="tab" data-v="pf" class="${R.tab==='pf'?'on':''}">ファウル・TO</button></div>`;
+ if(R.tab==='rs'){
+  const maxA=Math.max(0,...Object.keys(u.rs.A).map(Number)),maxB=Math.max(0,...Object.keys(u.rs.B).map(Number));
+  const top=Math.max(40,Math.ceil((Math.max(maxA,maxB)+14)/10)*10);
+  const cur=Math.max(1,Math.min(R.disp.score.A,R.disp.score.B)-3);
+  const qe=new Set();u.qends.forEach(e=>{qe.add('A'+e.A);qe.add('B'+e.B);});
+  if(u.qendDone){qe.add('A'+maxA);qe.add('B'+maxB);}
+  const cell=(T,i)=>{const e=u.rs[T][i];const cls=qe.has(T+i)?' qend':'';
+   const circ=u.qendDone&&((T==='A'&&i===maxA)||(T==='B'&&i===maxB))?' circ':'';
+   const tot=`<div class="c tot ${T} ${e?'hit':''} ${e&&e.pre?'pre':''}${cls}${circ}" data-ui="rs" data-h="rs${T}${i}" data-team="${T}" data-tot="${i}" style="--qc:${e?qc(e.q):'#000'}">${e&&e.mark!=='1'?'<span class="sl"></span>':''}${e&&e.mark==='1'?'<span class="dot"></span>':''}<span style="position:relative">${e&&e.mark==='1'?'':i}</span></div>`;
+   const num=`<div class="c num ${e&&e.mark==='3'?'cir':''}${cls} ${e&&e.pre?'pre':''}" style="--qc:${e?qc(e.q):'#000'}">${e?(e.mark==='own'?'▲':`<span>${e.num}</span>`):''}</div>`;
+   return T==='A'?num+tot:tot+num;};
+  let rows='';for(let i=1;i<=top;i++)rows+=`<div style="display:contents" ${i===cur?'':''}>${cell('A',i)}${cell('B',i)}</div>`;
+  h+=`<div class="lbl">数字をタップして記入（2点＝斜線、フリースロー＝●）。第${q}Qは<span style="color:${qc(q)}">${(q===1||q===3)?'赤':'濃い色'}</span>で記録されます。</div>
+  <div id="rsScroll" style="max-height:${Math.round(window.innerHeight*.33)}px;overflow:auto;border-radius:6px"><div class="rs"><div class="h">A</div><div class="h">白</div><div class="h">青</div><div class="h">B</div>${rows.replace(`data-tot="${cur}"`,`data-tot="${cur}" id="rsCur"`)}</div></div>
+  ${R.cfg.scene==='q4'?'<button class="pbtn k" data-a="qend" style="width:100%;margin-top:8px;font-size:15px">Qの終わりのしるし（最後の得点を○・太い線）</button>':''}`;
+ }else{
+  const T=R.fteam;
+  h+=`<div class="tabs"><button data-ui="fteam" data-v="A" class="${T==='A'?'on':''}">白（A）</button><button data-ui="fteam" data-v="B" class="${T==='B'?'on':''}">青（B）</button></div>
+  <div class="boxes" style="margin-bottom:6px"><b style="width:100%">チームファウル 第${q}Q（数字をタップで斜線）</b>${[1,2,3,4].map(i=>`<button class="${u.tfm[q][T]>=i?'m':''}" style="--qc:${qc(q)}" ${u.tfm[q][T]===i-1?`data-a="tfm" data-h="tfm${T}" data-args='["${T}"]'`:''}>${i}</button>`).join('')}</div>
+  <div class="boxes" style="margin-bottom:8px"><b style="width:100%">タイムアウト（Qの枠に×）</b>${[1,2,3,4].map(i=>`<button class="${u.tom[T].includes(i)?'x':''}" style="--qc:${qc(i)}" data-a="tom" data-h="tom${T}${i}" data-args='["${T}",${i}]'>${['①','②','③','④'][i-1]}</button>`).join('')}</div>
+  <table class="ft"><tr><th>No.</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+  ${NUMS.map(n=>{const f=u.pf[T][n]||[];return `<tr class="tap" data-ui="pf" data-h="pf${T}${n}" data-team="${T}" data-num="${n}"><td class="no">${n}</td>${[0,1,2,3,4].map(i=>f[i]?`<td class="fb" style="color:${qc(f[i].q)}">${f[i].t}<sub>${f[i].q}</sub></td>`:`<td class="${f.length>=5?'out':''}"></td>`).join('')}</tr>`;}).join('')}
+  </table><div class="lbl">選手の行をタップしてファウルを記入</div>`;
+ }
+ return h;
+}
+function asstPanel(){
+ const u=R.user;let h='';
+ if(u.callOpts)h+=`<div class="callbox"><b>📣 得点をコール！（A→Bの順）</b><div class="chips" style="margin-top:8px">${u.callOpts.opts.map(o=>`<button data-a="call" data-h="call${o.replace(' 対 ','-')}" data-args='${JSON.stringify([o])}'>${o}</button>`).join('')}</div></div>`;
+ const fs=pendingTask('fshow');
+ h+=`<div class="lbl">ファウルの表示（報告のあと）${fs?`<b style="color:var(--or2)">← ${TN[fs.team]}のファウル！</b>`:''}</div>
+ <div class="swbox"><div style="font-size:12px;font-weight:800;margin-bottom:4px">① チームファウル数 ${u.showTf!=null?`<span style="color:var(--ok)">「${u.showTf}」を表示中</span>`:''}</div><div class="pad">${[1,2,3,4,5].map(n=>`<button data-a="showTf" data-h="stf${n}" data-args="[${n}]">${n}</button>`).join('')}</div>
+ <div style="font-size:12px;font-weight:800;margin:8px 0 4px">② 個人ファウルのふだ</div><div class="pad">${[1,2,3,4,5].map(n=>`<button data-a="showPf" data-h="spf${n}" data-args="[${n}]" style="${n===5?'background:#fee2e2':''}">${n}</button>`).join('')}</div></div>
+ <div class="lbl">テーブルの表示（ボールがライブになったら）</div>
+ <div class="tbl">${['A','B'].map(t=>`<div class="tcard"><b>${TN[t]}（${t}）</b><div class="n">${u.table[t].n}</div><div class="row"><button data-a="tbl" data-h="tbl${t}-" data-args='["${t}",-1]'>−</button><button data-a="tbl" data-h="tbl${t}+" data-args='["${t}",1]'>＋</button></div><button class="redbtn ${u.table[t].red?'on':''}" data-a="red" data-h="red${t}" data-args='["${t}"]'>赤い標識 ${u.table[t].red?'ON':'OFF'}</button></div>`).join('')}</div>`;
+ return h;
+}
+function closeSheet(){const s=document.getElementById('sheet');if(s)s.remove();}
+function openRs(team,tot){
+ if(!R||R.el<0||R.card)return;closeSheet();let mark=null,num=null;
+ const s=document.createElement('div');s.className='sheet';s.id='sheet';
+ const marks=[['2','／ 2点'],['1','● フリースロー'],...(R.cfg.three?[['3','○ 3点']]:[])];
+ const ren=()=>{s.innerHTML=`<h3>${TN[team]}側「${tot}」に記入</h3><div class="lbl">記号</div><div class="chips">${marks.map(([k,l])=>`<button data-m="${k}" data-h="m${k}" class="${mark===k?'sel':''}">${l}</button>`).join('')}</div>
+  <div class="lbl">選手の番号</div><div class="chips">${NUMS.map(n=>`<button data-n="${n}" data-h="n${n}" class="${num===n?'sel':''}">${n}</button>`).join('')}</div>
+  <div class="grid2" style="margin-top:12px"><button class="pbtn k" id="sc0" style="font-size:16px">${R.user.rs[team][tot]&&!R.user.rs[team][tot].pre?'消しゴムで消す':'とじる'}</button><button class="pbtn o" id="sc1" style="font-size:16px;opacity:${mark&&num?1:.4}">記入する</button></div>`;
+  applyHints(s);
+  s.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mark=b.dataset.m;ren();});
+  s.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{num=+b.dataset.n;ren();});
+  s.querySelector('#sc0').onclick=()=>{const e=R.user.rs[team][tot];if(e&&!e.pre){delete R.user.rs[team][tot];renderPanel();}closeSheet();};
+  s.querySelector('#sc1').onclick=()=>{if(!mark||!num)return;closeSheet();act('rs',team,tot,mark,num);};};
+ ren();document.body.appendChild(s);
+}
+function openPf(team,num){
+ if(!R||R.el<0||R.card)return;closeSheet();const s=document.createElement('div');s.className='sheet';s.id='sheet';
+ s.innerHTML=`<h3>${TN[team]} ${num}番のファウル（第${R.truth.q}Q）</h3><div class="chips">${[['P','P　スローイン'],["P'","P'　フリースロー"],['U','U　アンスポーツマンライク'],['T','T　テクニカル']].map(([k,l])=>`<button data-t="${k}" data-h="pt${k}">${l}</button>`).join('')}</div><button class="pbtn k" id="sc0" style="width:100%;margin-top:12px;font-size:16px">とじる</button>`;
+ applyHints(s);
+ s.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{closeSheet();act('foul',team,num,b.dataset.t);});
+ s.querySelector('#sc0').onclick=closeSheet;document.body.appendChild(s);
+}
+
+/* ---- 結果 ---- */
+function finish(){
+ const r=R;r.done=true;closeSheet();
+ const o=r.log.filter(l=>l.g==='o').length,t=r.log.filter(l=>l.g==='t').length,x=r.log.filter(l=>l.g==='x').length,tot=o+t+x;
+ const sc=tot?Math.round((o+t*.5)/tot*100):0;
+ const rts=r.log.filter(l=>l.rt!=null&&l.g!=='x').map(l=>l.rt);const avg=rts.length?(rts.reduce((a,b)=>a+b,0)/rts.length):null;
+ const best=store.get('to-best',{});const key=r.cfg.role+'-'+r.cfg.scene;const nb=best[key]==null||sc>best[key];if(nb){best[key]=sc;store.set('to-best',best);}
+ const msg=sc>=90?'すばらしい！本番もバッチリ！🏆':sc>=75?'グッジョブ！あと少しで完ぺき！':sc>=50?'いい調子！まちがえたところを見直そう':'大丈夫！何回も練習すれば上手になるよ';
+ R=null;
+ const bad=r.log.filter(l=>l.g!=='o');
+ app.innerHTML=`<div class="wrap"><h1>結果</h1><p class="lead">${ROLES[r.cfg.role].icon} ${ROLES[r.cfg.role].name}・${SCENES[r.cfg.scene].name}・${SPEEDS[r.cfg.speed].name}</p>
+ <div class="score">${sc}<span style="font-size:22px">点</span></div><p style="text-align:center;font-weight:800;margin:4px 0 14px">${msg}${nb&&tot?'<br><span style="color:var(--or2)">ベスト更新！</span>':''}</p>
+ <div class="stats"><div><b style="color:var(--ok)">${o}</b>○ できた</div><div><b style="color:var(--tri)">${t}</b>△ おそい</div><div><b style="color:var(--ng)">${x}</b>✕ ミス</div></div>
+ ${avg!=null?`<p style="text-align:center;font-size:14px;margin-top:10px">平均反応時間 <b>${avg.toFixed(2)}秒</b>（目標 ${(r.sp.slow/1000).toFixed(1)}秒以内）</p>`:''}
+ <h2>${bad.length?'見直しポイント':'ミスなし！'}</h2><div class="log">${bad.map(l=>`<div class="li ${l.g}"><div class="c">場面：${l.cap}</div>${l.g==='t'?'△ ':'✕ '}${l.text}${l.extra?`<br><small>${l.extra}</small>`:''}${l.rt!=null?`<br><small>反応 ${l.rt.toFixed(1)}秒</small>`:''}</div>`).join('')}</div>
+ <details style="margin-top:12px"><summary style="font-size:14px;color:var(--mut)">できたところも見る（${o}）</summary><div class="log">${r.log.filter(l=>l.g==='o').map(l=>`<div class="li o"><div class="c">場面：${l.cap}</div>○ ${l.text}${l.rt!=null?` <small>（${l.rt.toFixed(1)}秒）</small>`:''}</div>`).join('')}</div></details>
+ <button class="big" id="again">もう一度</button><button class="big sec" id="chg">係・場面を変える</button><button class="big sec" id="hm">ホーム</button></div>`;
+ document.getElementById('again').onclick=()=>{ac();go(()=>startRun(clone(r.cfg)));};
+ document.getElementById('chg').onclick=()=>go(setup);document.getElementById('hm').onclick=()=>go(home);
+}
+
+/* ============ 判断ドリル ============ */
+const QB=[
+ {c:'タイマー',q:'ジャンプボールで試合開始。ゲームクロックをスタートするのはいつ？',o:['審判がボールをトスしたとき','ジャンパーがボールをタップしたとき','どちらかのチームがボールをコントロールしたとき'],a:1,e:'ジャンパーがボールをタップしたときにスタート（p.25）。ショットクロックはコントロールしてから。'},
+ {c:'タイマー',q:'スローインのとき、ゲームクロックをスタートするのはいつ？',o:['スローインする選手がボールを持ったとき','ボールが手からはなれたとき','スローインされたボールがコート内の選手に触れたとき'],a:2,e:'コート内の選手に触れたときにスタート（p.26）。'},
+ {c:'タイマー',q:'最後のフリースローが外れてゲームが続くとき、ゲームクロックをスタートするのは？',o:['ボールがリングに当たったとき','ボールがコート内の選手に触れたとき','どちらかのチームがコントロールしたとき'],a:1,e:'コート内の選手に触れたときにスタート（p.27）。ショットクロックはコントロールしたとき。'},
+ {c:'タイマー',q:'U12で、フィールドゴールが入った。ゲームクロックはどうする？',o:['止める','止めない（動かしたまま）','第4Qの最後の2分だけ止める'],a:1,e:'U12には、フィールドゴールのあとにゲームクロックを止める規定はない（マニュアル付録）。ただし、タイムアウトを求めているチームの相手が得点したときは止める（p.29）。'},
+ {c:'タイマー',q:'白チームがタイムアウトを請求中。青チームがシュートを決めた。タイマーは？',o:['ゲームクロックを止める','動かしたまま','審判の笛を待つ'],a:0,e:'タイムアウトを求めているチームの「相手チーム」がフィールドゴールで得点したら止める（p.29）。'},
+ {c:'タイマー',q:'U12のタイムアウトの長さとブザーは？',o:['60秒。50秒と60秒でブザー','45秒。35秒と45秒でブザー','30秒。終わりにだけブザー'],a:1,e:'1回45秒。35秒で1回目、45秒で2回目のブザー。審判の合図から計る（p.31）。'},
+ {c:'タイマー',q:'第1Qと第2Qの間のインターバルについて正しいのは？',o:['2分。1分前と終了時にブザー','1分。1分前は知らせず、終了時にブザー','1分。30秒前と終了時にブザー'],a:1,e:'U12の1・2Q間、3・4Q間は1分。30秒前のブザーはなく、終了時にブザー（p.24・付録）。'},
+ {c:'タイマー',q:'U12のハーフタイムは？',o:['10分','5分（3分前・1分前・終了時にブザー）','3分'],a:1,e:'ハーフタイムは5分。終了3分前、1分前、終了時にブザー（付録）。'},
+ {c:'タイマー',q:'U12の1つのクォーターの時間は？',o:['10分','8分','6分'],a:2,e:'6分×4Q。延長は1回3分（大会による。引き分けもある）。'},
+ {c:'タイマー',q:'タイマーの「スタート」の合図として正しい動きは？',o:['「スタート！」と言いながら手を上げる','「スタート！」とコールして、手をにぎる→手を下ろす','だまってボタンを押す'],a:1,e:'スタートは「手をにぎる→下ろす」の2段階。ストップは「ストップ！」でその瞬間に手を上げる（マニュアル）。'},
+ {c:'ショットクロック',q:'ジャンプボールのあと、24秒を計りはじめるのは？',o:['ジャンパーがタップしたとき','タップしたボールをどちらかのチームがコントロールしたとき','審判がトスしたとき'],a:1,e:'コントロールしたときから計りはじめる（p.34）。'},
+ {c:'ショットクロック',q:'「コントロール」にあてはまるのは？',o:['ボールにふれただけ','ボールを持っている・ドリブルしている','シュートのあとのルーズボール'],a:1,e:'コート内でボールを持っている・ドリブルしているのがコントロール。ふれただけではコントロールではない（p.33）。'},
+ {c:'ショットクロック',q:'シュートがリングに当たって外れ、オフェンス側がリバウンドをとった。',o:['24秒にリセット','14秒にリセットしてスタート','リセットせず続きから'],a:1,e:'リングに当たったあと、オフェンス側がコントロール→14秒（p.42）。'},
+ {c:'ショットクロック',q:'シュートがリングに当たって外れ、ディフェンス側がリバウンドをとった。',o:['24秒からスタート','14秒からスタート','続きから'],a:0,e:'ディフェンス側がコントロール→24秒から計りはじめる（p.36）。'},
+ {c:'ショットクロック',q:'シュートがリングに当たった瞬間、ショットクロックはどうする？',o:['何もしない','リセットして止める（表示を消す）','14にする'],a:1,e:'リングに当たったときにリセット（止める・表示を消す）。そのあとコントロールしたチームで24か14か決める（p.36・マニュアル）。'},
+ {c:'ショットクロック',q:'相手チームがパスをカットしたが、まだコントロールしていない。',o:['24秒にリセット','ストップする','ストップもリセットもしない'],a:2,e:'パスやドリブルをカットしただけでは、ストップもリセットもしない（p.39）。'},
+ {c:'ショットクロック',q:'ディフェンスがボールをコートの外に出した。同じチームのスローインで再開。',o:['24秒にリセット','14秒にリセット','止めるがリセットせず、続きから計る'],a:2,e:'それまでコントロールしていたチームに引き続きスローインが与えられるときは、止めるがリセットしない（p.44）。'},
+ {c:'ショットクロック',q:'U12：残り13秒で相手チームのファウル。フロントコートからスローイン。',o:['14秒にリセット','24秒にリセット','続きから（13秒）'],a:1,e:'一般は14秒リセットだが、U12は24秒リセット（マニュアル付録）。'},
+ {c:'ショットクロック',q:'フリースローのとき、ショットクロックは？',o:['24を表示しておく','表示を消す','前の秒数のまま止めておく'],a:1,e:'フリースローを行うときは24秒にリセットし、表示しない（p.46）。'},
+ {c:'ショットクロック',q:'新しく24秒を計りはじめるとき、ゲームの残り時間が18秒だった。',o:['24から計る','18にする','ショットクロックの表示を消す'],a:2,e:'残り時間が24秒より少なければ、ショットクロックの表示を消す（p.48）。'},
+ {c:'ショットクロック',q:'審判が笛を鳴らしたとき、ショットクロックオペレーターがまずすることは？',o:['すぐに24にリセット','必ず一度ストップし、審判のシグナルを確認する','何もしない'],a:1,e:'「笛が鳴ったら必ず一度ストップ→シグナルを見て継続かリセットか」を習慣にする（マニュアル）。'},
+ {c:'タイムアウトの合図',q:'ファウルの笛が鳴った。タイムアウトを知らせていいのはいつ？',o:['笛が鳴った直後','審判がTOにファウルの内容を伝えたあと','フリースローが終わってから'],a:1,e:'ファウルのときは、審判がTOにファウルの内容を伝えたあと（p.16）。'},
+ {c:'タイムアウトの合図',q:'白がタイムアウトを請求中。青がシュートを決めた。',o:['知らせてよい（得点された白のタイムアウト）','知らせてはいけない','審判の笛を待つ'],a:0,e:'相手チームのシュートが入ったときは、得点されたチームのタイムアウトのみ知らせてよい（p.16）。'},
+ {c:'タイムアウトの合図',q:'白がタイムアウトを請求中。白がシュートを決めた。',o:['知らせてよい','まだ知らせない','審判に声をかける'],a:1,e:'得点したチームのタイムアウトは、このタイミングでは知らせない（得点された側のみOK：p.16）。'},
+ {c:'タイムアウトの合図',q:'スローインする選手にボールが渡されたあとで、タイムアウトの請求があった。',o:['すぐに知らせる','知らせてはいけない（次のタイミングを待つ）','スローインのボールが触れたら知らせる'],a:1,e:'スローインするプレーヤーにボールが与えられたあとは知らせてはいけない（p.17）。'},
+ {c:'タイムアウトの合図',q:'最後のフリースローが成功した。タイムアウトを知らせてよいのは？',o:['フリースローをしたチームだけ','相手チームだけ','どちらのチームのタイムアウトでも'],a:2,e:'最後のフリースローが成功したときは、どちらのチームのタイムアウトでもOK（p.16）。'},
+ {c:'タイムアウトの合図',q:'タイムアウトや交代の合図のしかたは？',o:['立ち上がって大きな声で','ブザーとジェスチャーだけで（立たない・声を出さない）','審判のそばまで行って伝える'],a:1,e:'笛のあと速やかにブザーとジェスチャーだけで合図。立ち上がったり声を出したりしない（マニュアル）。'},
+ {c:'スコアシート',q:'2点のフィールドゴールの記入のしかたは？',o:['点数の数字に斜線、横に選手番号','点数の数字に●','点数の数字を○で囲む'],a:0,e:'得点の数字に斜線を引き、横に選手の番号を書く。フリースローは●、3点は番号を○で囲む（p.9・記入例）。'},
+ {c:'スコアシート',q:'誤って自チームのバスケットにゴールした。記入は？',o:['記録しない','点数の枠に対角線、その横に▲','相手チームのキャプテンの得点にする'],a:1,e:'U12では、番号の代わりに▲を記入（記入例・付録）。'},
+ {c:'スコアシート',q:'第2Qに、フリースローが与えられるパーソナルファウル。記入は？',o:['P₂','P\'₂（P\'の右下に2）','F₂'],a:1,e:'スローイン＝P、フリースロー＝P\'。右下にファウルがおきたQを書く（p.5）。'},
+ {c:'スコアシート',q:'アンスポーツマンライクファウルの記号は？',o:['A','U','D'],a:1,e:'U＝アンスポーツマンライク、T＝テクニカル（p.6）。'},
+ {c:'スコアシート',q:'コーチに記録されるファウルの記号で「マンツーマンペナルティ」は？',o:['C','B','M'],a:2,e:'C＝コーチ自身のテクニカル、B＝ベンチ、M＝マンツーマン。U12はMが3回でヘッドコーチ失格退場（付録）。'},
+ {c:'スコアシート',q:'スコアシートの色分けで正しいのは？',o:['第1Q・第3Q＝赤、第2Q・第4Q・OT＝濃い色（黒/青）','前半＝赤、後半＝黒','全部黒'],a:0,e:'出場時限・ファウル・タイムアウトなどをQごとの色で記録（記入例）。'},
+ {c:'スコアシート',q:'各Qのはじめ、出場する選手の出場時限の欄に書くのは？',o:['×','／（斜線）','○'],a:1,e:'各Qのはじめは「／」、途中から出場したQは逆斜線「＼」（記入例・付録）。'},
+ {c:'スコアシート',q:'U12のタイムアウトの回数と記録のしかたは？',o:['前半2回・後半3回、経過時間を書く','各Qに1回、そのQの枠に×','各Qに2回、○を書く'],a:1,e:'各Q・各OTに1回ずつ。スコアシートには各Qの枠に×（付録）。'},
+ {c:'スコアシート',q:'スコアシートを書くときに使うものは？',o:['ボールペン','えんぴつ（直線は定規）','マーカー'],a:1,e:'消せないものは使わない。直線は定規で（p.22）。'},
+ {c:'矢じるし',q:'試合が始まる前（ジャンプボールの前）の矢じるしは？',o:['白に向ける','青に向ける','どちらにも向けない'],a:2,e:'ジャンプボールの前はどちらにも向けない（p.52）。'},
+ {c:'矢じるし',q:'ジャンプボールのあと、白がボールをコントロールした。矢じるしは？',o:['白の攻める方向','青の攻める方向','まだ向けない'],a:1,e:'コントロールしたチームの「相手チーム」が攻める方向に向ける（p.53）。'},
+ {c:'矢じるし',q:'ヘルドボールのあと、矢じるしを反転するタイミングは？',o:['審判がヘルドボールの合図をしたとき','スローインする選手にボールが渡されたとき','スローインのボールがコート内の選手に触れたとき'],a:2,e:'合図のときは手をそえて準備。スローインのボールがコート内の選手に（正当に）触れたら反転（p.55-56・マニュアル）。'},
+ {c:'矢じるし',q:'矢じるしのスローインで、スローインする選手がバイオレーションをした。',o:['矢じるしの向きを変える','変えない','審判に聞く'],a:0,e:'スローインする選手のバイオレーション→向きを変える（p.57）。'},
+ {c:'矢じるし',q:'矢じるしのスローインで、ボールが空中にある間にファウルがあった。',o:['向きを変える','向きは変えない','反対に向けてから戻す'],a:1,e:'スローインしたボールが空中にある間のファウル→向きは変えない（p.61）。'},
+ {c:'アシスタント',q:'ファウルのあと、チームファウルと個人ファウルを示す順番は？',o:['個人ファウルが先','チームファウルが先','同時に'],a:1,e:'個人ファウルよりチームファウルを先に示す（マニュアル）。'},
+ {c:'アシスタント',q:'個人ファウルのふだの示し方は？',o:['上下にふる','①ベンチ→②正面→③再びベンチに向ける','高くかかげて回す'],a:1,e:'3段階で示す。立ち上がったり声を出したり、ふったり回したりしない（マニュアル）。'},
+ {c:'アシスタント',q:'チームファウルの赤い標識を出すタイミングは？',o:['4個目のファウルの笛が鳴ったとき','4個目のチームファウルのあと、スローイン／フリースローの選手にボールが与えられたとき','5個目のファウルのとき'],a:1,e:'ボールがライブになったとき（ボールが与えられたとき）に表示（マニュアル・p.49）。'},
+ {c:'アシスタント',q:'得点が入ったときのコールの順番は？',o:['得点したチームから','いつも「チームA→チームB」の順','大きい点数から'],a:1,e:'スコアシートのランニングスコアに合わせて、常にA→Bの順に「23対45」のようにコール（マニュアル）。'},
+ {c:'その他',q:'TOサポーターが審判を呼んでよいのは？',o:['ミスに気づいたらすぐ','ゲームが止まっているとき（クロックが止まり、ボールがデッド）','クォーターが終わったときだけ'],a:1,e:'プレー中にブザーを鳴らして呼んではいけない（マニュアル）。'},
+ {c:'その他',q:'選手の5回目のファウル。スコアラーは？',o:['何もしない','審判に「白7番！ファイブファウルです！」と知らせる','コーチに伝える'],a:1,e:'審判に知らせる（p.21）。'},
+ {c:'その他',q:'U12で、選手の交代ができるのは（第3Qまで）？',o:['いつでも','インターバルのみ','タイムアウトのときだけ'],a:1,e:'第3Qまではインターバルのみ交代できる（付録）。'},
+ {c:'その他',q:'クォータータイム・タイムアウトのときのモップがけは？',o:['オールコート','台形（制限区域）のみ','やらない'],a:1,e:'ハーフタイムは2人以上でオールコート、クォータータイムとタイムアウトは台形のみ（p.63）。'}
+];
+let DR=null;
+function drillStart(){
+ const cats=[...new Set(QB.map(q=>q.c))];
+ app.innerHTML=`<div class="wrap"><button class="back" id="bk">‹ もどる</button><h1>判断ドリル</h1><p class="lead">場面を読んで、正しい操作をえらぼう。10問ずつ出題します。</p>
+ <div class="opts g2"><button class="opt sel" data-c="all"><b>ぜんぶ</b><small>${QB.length}問からランダム</small></button>${cats.map(c=>`<button class="opt" data-c="${c}"><b>${c}</b><small>${QB.filter(q=>q.c===c).length}問</small></button>`).join('')}</div></div>`;
+ document.getElementById('bk').onclick=()=>go(home);
+ app.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const c=b.dataset.c;const pool=c==='all'?QB:QB.filter(q=>q.c===c);DR={qs:shuffle(pool).slice(0,10).map(q=>{const idx=shuffle(q.o.map((_,i)=>i));return{...q,o:idx.map(i=>q.o[i]),a:idx.indexOf(q.a)};}),i:0,ok:0,miss:[]};drillQ();});
+}
+function drillQ(){
+ const q=DR.qs[DR.i];
+ app.innerHTML=`<div class="wrap"><button class="back" id="bk">‹ やめる</button><div style="font-size:13px;color:var(--mut)">${DR.i+1} / ${DR.qs.length}</div><div class="prog"><i style="width:${DR.i/DR.qs.length*100}%"></i></div>
+ <div class="qcard"><div class="cat">${q.c}</div><div class="qt">${q.q}</div><div class="ans">${q.o.map((o,i)=>`<button data-i="${i}">${o}</button>`).join('')}</div><div id="ex"></div></div></div>`;
+ document.getElementById('bk').onclick=()=>go(drillStart);
+ app.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(DR.answered)return;DR.answered=true;const i=+b.dataset.i,ok=i===q.a;if(ok)DR.ok++;else DR.miss.push(q);
+  app.querySelectorAll('[data-i]').forEach(x=>{const j=+x.dataset.i;if(j===q.a)x.classList.add('right');else if(j===i)x.classList.add('wrong');});
+  blip(ok);
+  document.getElementById('ex').innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--ng)'}">${ok?'せいかい！':'ざんねん…'}</b><br>${q.e}</div><button class="big" id="nx">${DR.i+1<DR.qs.length?'次へ':'結果を見る'}</button>`;
+  document.getElementById('nx').onclick=()=>{DR.answered=false;DR.i++;if(DR.i<DR.qs.length)drillQ();else drillEnd();};});
+}
+function drillEnd(){
+ app.innerHTML=`<div class="wrap"><h1>ドリル結果</h1><div class="score">${DR.ok}<span style="font-size:22px"> / ${DR.qs.length}</span></div>
+ <h2>${DR.miss.length?'まちがえた問題':'全問正解！🏆'}</h2><div class="log">${DR.miss.map(q=>`<div class="li"><div class="c">${q.c}</div><b>${q.q}</b><br>答え：${q.o[q.a]}<br><small>${q.e}</small></div>`).join('')}</div>
+ <button class="big" id="ag">もう一度</button><button class="big sec" id="hm">ホーム</button></div>`;
+ document.getElementById('ag').onclick=()=>go(drillStart);document.getElementById('hm').onclick=()=>go(home);
+}
+
+/* ============ ルール早見表 ============ */
+function rules(){
+ const sec=(t,items)=>`<div class="rule"><h3>${t}</h3><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+ app.innerHTML=`<div class="wrap"><button class="back" id="bk">‹ もどる</button><h1>ルール早見表</h1><p class="lead">「U12 TOマニュアル」「TOサポーターマニュアル」より。</p>
+ ${sec('🪑 すわる場所',['左から：ショットクロックオペレーター → タイマー → スコアラー → アシスタントスコアラー','Aチーム（淡色）側にショットクロック、Bチーム（濃色）側にアシスタント','前の試合が終わったらすぐにすわる'])}
+ ${sec('⏱️ タイマー',['スタート：ジャンプボールのタップ／スローインが選手に触れた／最後のFTが外れて選手に触れた','ストップ：各Qの終わり／審判の笛（ファウル・バイオレーション・ヘルドボールなど）／TO請求中に相手がFG','U12はFGのあとにクロックを止めない','「スタート！」手をにぎる→下ろす、「ストップ！」その瞬間に手を上げる','2本のFTの最後の1本の前に手を上げる','タイムアウトは審判の合図から計測、35秒と45秒でブザー','1・2Q間と3・4Q間は1分（1分前は知らせない）、ハーフタイム5分（3分前・1分前・終了）'])}
+ ${sec('⏲️ ショットクロック',['コントロール（持つ・ドリブル）からスタート。ふれただけではスタートしない','リングに当たった／入った瞬間にリセット（表示を消す）','その後オフェンスがコントロール→14秒、ディフェンス→24秒','相手チームがコントロール→24秒にリセット（カットしただけでは何もしない）','笛が鳴ったら必ず一度ストップ→シグナルを見て継続かリセット','同じチームのスローイン（相手がアウトに出した等）→リセットしない','フリースロー・24秒リセットのスローインのときは表示を消す','新しく計るとき残り時間がそれより少なければ表示を消す','各Qの開始時は24を表示、終わりは表示を消す'])}
+ ${sec('📝 スコアラー',['2点＝数字に斜線＋番号、FT＝●＋番号、3点＝番号を○、自チームのバスケット＝対角線＋▲','P＝スローイン、P\'＝フリースロー、U＝アンスポ、T＝テクニカル（右下にQ数）','コーチ：C（本人）・B（ベンチ）・M（マンツーマン、3回で失格）','チームファウルは数字に斜線、タイムアウトはQの枠に×','色：第1・3Q＝赤、第2・4Q・OT＝濃色','Qの終わり：最後の得点を○、両チームの下に太い線','出場：各Qのはじめに「／」、途中出場は「＼」','えんぴつで書く、直線は定規で'])}
+ ${sec('📢 タイムアウトの合図',['OK：審判が笛を鳴らしたとき（ファウルは報告のあと）／最後のFT成功（どちらも）／相手チームのFG（得点されたチームのみ）','NG：スローインのボールが渡されたあと／FTのボールがシューターに渡されたあと／最後のFT成功後、スローインの選手がボールを持ったあと','ブザーとジェスチャーだけで。立たない・声を出さない','選手の5回目のファウルは審判に「白7番！ファイブファウルです！」'])}
+ ${sec('➡️ ポゼッション・アロー',['試合前（ジャンプボール前）はどちらにも向けない','ジャンプボール後、コントロールしたチームの相手が攻める方向へ','ヘルドボールの合図で手をそえる（高くかかげない）','スローインが選手に触れたら反転','スローインの選手のバイオレーション、だれにも触れずアウト、リングにはさまる・乗る→向きを変える','投げ入れる前・空中にある間のファウル→変えない'])}
+ ${sec('🔢 アシスタントスコアラー',['得点は「A対B」の順にコール（スコアラーが確認できるように）','ファウルはチームファウル→個人ファウルの順に示す','個人ファウルのふだ：ベンチ→正面→ベンチの3段階（ふらない・回さない）','円筒・赤い標識はボールがライブになったとき（ボールが渡されたとき）','5個目以降に審判が気づかずスローインさせようとしたら、ブザーで知らせる'])}
+ <div class="rule"><h3>⚖️ 一般とU12のちがい（おもなもの）</h3><table><tr><th>項目</th><th>U12</th></tr>
+ <tr><td>競技時間</td><td>6分×4Q、延長は1回3分（引き分けあり）</td></tr><tr><td>タイムアウト</td><td>各Q1回、45秒（35秒・45秒でブザー）</td></tr>
+ <tr><td>交代</td><td>第3Qまではインターバルのみ</td></tr><tr><td>14秒リセット</td><td>相手ファウル後のフロントコートのスローインは24秒リセット</td></tr>
+ <tr><td>3点</td><td>基本なし（採用する大会もある）</td></tr><tr><td>アンスポ後</td><td>センターラインの延長からスローイン、24秒</td></tr></table></div>
+ </div>`;
+ document.getElementById('bk').onclick=()=>go(home);
+}
+
+home();
+</script>
+</body>
+</html>
